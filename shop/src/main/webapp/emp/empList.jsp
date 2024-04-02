@@ -14,6 +14,13 @@
 %>
 
 <%
+	//현재페이지
+	//페이징(페이지가 다음 페이지로 넘어가는 것)
+	//리스트 
+	//처음 페이지랑 마지막 페이지
+	//클라이언트가 현재 페이지를 요청
+	//한 페이지당 보여지는 페이지 개수 = rowPerpage
+	
 	// request 분석
 	int currentPage = 1;
 	if(request.getParameter("currentPage") != null) {
@@ -22,6 +29,29 @@
 	
 	int rowPerPage = 10;
 	int startRow = (currentPage-1)*rowPerPage;
+	
+	//직원 리스트 개수
+	Class.forName("org.mariadb.jdbc.Driver");
+	PreparedStatement empstmt = null;
+	Connection conn = null;
+	conn = DriverManager.getConnection(
+			"jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
+	
+	String empsql = "select count(*) cnt From emp";
+	ResultSet emprs = null;
+	empstmt = conn.prepareStatement(empsql);
+	emprs =empstmt.executeQuery();
+	
+	int totalRow = 0;
+	if(emprs.next()) {
+	      totalRow = emprs.getInt("cnt");
+	   }
+	//마지막 페이지
+	int lastPage = totalRow / rowPerPage;
+	   if(totalRow % rowPerPage != 0) {
+	      lastPage = lastPage + 1;
+	   }
+	
 %>
 
 <!-- Model Layer -->
@@ -31,7 +61,6 @@
 	// -> API사용(JDBC API)하여 자료구조(ResultSet) 취득 
 	// -> 일반화된 자료구조(ArrayList<HashMap>)로 변경 -> 모델 취득
 	Class.forName("org.mariadb.jdbc.Driver");
-	Connection conn = null;
 	PreparedStatement stmt = null;
 	ResultSet rs = null;
 	String sql = "select emp_id empId, emp_name empName, emp_job empJob, hire_date hireDate, active from emp order by hire_date desc limit ?, ?";
@@ -110,10 +139,8 @@
 						<td><%=(String) (m.get("empName"))%></td>
 						<td><%=(String) (m.get("empJob"))%></td>
 						<td><%=(String) (m.get("hireDate"))%></td>
-						<td><a
-							href='modifyempActive.jsp?active=<%=(String) (m.get("active"))%>'>
-								<%=(String) (m.get("active"))%>
-						</a></td>
+						<td><a href='modifyempActive.jsp?empId=<%=(String)(m.get("empId"))%>&active=<%=(String)(m.get("active"))%>'> <%=(String)(m.get("active"))%></a></td>
+						<!-- 값을 넘겨줄 때 empId의 값을 포함시키지 않고 넘겨서 파라미터에 null이 계속 들어감. 값을 보내는 페이지에서 get방식과 post방식 까먹지 말기. -->
 					</tr>
 					<%
 					}
@@ -128,6 +155,42 @@
 	</div>
 
 
+	<nav aria-label="Page navigation example">
+		<ul class="pagination justify-content-center">
+
+			<%
+			if (currentPage > 1) {
+			%>
+			
+			<li class="page-item"><a class="page-link"
+				href="./empList.jsp?currentPage=1">처음페이지</a></li>
+			<li class="page-item"><a class="page-link"
+				href="./empList.jsp?currentPage=<%=currentPage - 1%>">이전페이지</a></li>
+				
+			<%
+			} else {
+			%>
+			
+			<li class="page-item disabled"><a class="page-link"
+				href="./empList.jsp?currentPage=1">처음페이지</a></li>
+			<li class="page-item disabled"><a class="page-link"
+				href="./empList.jsp?currentPage=<%=currentPage - 1%>">이전페이지</a></li>
+				
+			<%
+			}
+			if (currentPage < lastPage) {
+			%>
+			
+			<li class="page-item"><a class="page-link"
+				href="./empList.jsp?currentPage=<%=currentPage + 1%>">다음페이지</a></li>
+			<li class="page-item"><a class="page-link"
+				href="./empList.jsp?currentPage=<%=lastPage%>">마지막페이지</a></li>
+				
+			<%
+			}
+			%>
+		</ul>
+	</nav>
 
 
 
