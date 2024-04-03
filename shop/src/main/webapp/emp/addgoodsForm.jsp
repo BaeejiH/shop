@@ -43,7 +43,7 @@
 	</div>	
 	
 	<h1>상품등록</h1>
-	<form method="post" action="/shop/emp/addgoodsAction">
+	<form method="post" action="/shop/emp/addgoodsAction.jsp">
 	<div>
 		category:
 		<select>
