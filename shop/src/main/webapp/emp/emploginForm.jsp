@@ -5,6 +5,10 @@
 		response.sendRedirect("/shop/emp/empList.jsp");
 		return; //로그인이 된 상태이기 때문에 null이 아닐시에 List로 이동
 	}
+
+
+	//세션이 남아있으면 변경된값이 들어가지 않음.꺼지지 않은 브라우저에 세션이 남아있어 같은 값이 중복됨.  서버 stop후 재실행 or 모든 브라우저 창 닫기.  
+
 %>
 
 <!DOCTYPE html>
@@ -45,14 +49,14 @@
                   <tr>
                      <th>Id:</th>
                      <td><input type="text" name="empID" class=form-control
-                        value="" placeholder="아이디"></td>   <br>
+                        value="admin" placeholder="아이디"></td>   <br>
                   </tr> <br>
       
                   <tr>
                   <br>
                      <th>Pw:</th>
                      <td><input type="password" name="emppw"
-                        class=form-control value="" placeholder="비밀번호"></td>
+                        class=form-control value="1234" placeholder="비밀번호"></td>
                   </tr>
                </table>
                <br>

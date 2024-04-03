@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*"%>
 <%@ page import="java.net.*"%>
+<%@ page import = "java.util.*" %>
 <%
 	//인증분기 :세션변수 이름 -loginEmp
 	if(session.getAttribute("loginEmp") != null) {
@@ -13,7 +14,7 @@
 	String empId = request.getParameter("empID");
 	String emppw = request.getParameter("emppw");
 	
-	String sql1 = "select emp_id empId from emp where active='ON' and emp_id =? and emp_pw = password(?)";
+	String sql1 = "select emp_id empId,emp_name empName,grade from emp where active='ON' and emp_id =? and emp_pw = password(?)";
 	Connection conn = null;
 	Class.forName("org.mariadb.jdbc.Driver");
 	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
@@ -31,7 +32,21 @@
 	
 	if(rs1.next()){//성공시 리스트로
 		System.out.println("로그인성공");
-		session.setAttribute("loginEmp", rs1.getString("empID"));
+		HashMap<String, Object> loginEmp = new HashMap<String, Object>();
+		loginEmp.put("empId",rs1.getString("empId"));
+		loginEmp.put("empName",rs1.getString("empName"));
+		loginEmp.put("grade",rs1.getInt("grade"));
+	
+		session.setAttribute("loginEmp", loginEmp);
+		
+		//디버깅
+		HashMap<String, Object> m = (HashMap<String, Object>)(session.getAttribute("loginEmp"));
+		System.out.println((String)(m.get("empId")));
+		System.out.println((String)(m.get("empName")));
+		System.out.println((Integer)(m.get("grade")));
+			
+		
+		
 		response.sendRedirect("./empList.jsp");
 	} else {// 실패시 로그인폼으로
 		System.out.println("로그인실패");
@@ -40,12 +55,3 @@
 	}
 	
 %>
-
-
-emploginAction.jsp
-
-
-
-
-
-

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*"%>
 <%@ page import="java.util.*"%>
+<%@ page import="java.net.*"%>
 
 
 <!-- Controller Layer -->
@@ -83,8 +84,7 @@
 		m.put("empJob", rs.getString("empJob"));
 		m.put("hireDate", rs.getString("hireDate"));
 		m.put("active", rs.getString("active"));
-		list.add(m);
-	}
+		list.add(m);	}
 	// JDBC API 사용이 끝났다면 DB자원들을 반납
 %>
 
@@ -113,9 +113,12 @@
   	
 </head>
 <body class="cinzel">
-
-
-
+	<!-- empmenu.jsp include:주체(서버) vs redirect(주체:클라이언트) -->
+	<!--empmenu.jsp include : 주체(서버) vs redirect(주체:클라이언트) -->
+		
+	<div>
+		<jsp:include page="/emp/inc/empmenu.jsp"></jsp:include>
+	</div>
 
 
 	<div class="container">
@@ -139,8 +142,19 @@
 						<td><%=(String) (m.get("empName"))%></td>
 						<td><%=(String) (m.get("empJob"))%></td>
 						<td><%=(String) (m.get("hireDate"))%></td>
-						<td><a href='modifyempActive.jsp?empId=<%=(String)(m.get("empId"))%>&active=<%=(String)(m.get("active"))%>'> <%=(String)(m.get("active"))%></a></td>
-						<!-- 값을 넘겨줄 때 empId의 값을 포함시키지 않고 넘겨서 파라미터에 null이 계속 들어감. 값을 보내는 페이지에서 get방식과 post방식 까먹지 말기. -->
+						<td>
+						<% 
+						HashMap<String, Object> sm = (HashMap<String,Object>)(session.getAttribute("loginEmp"));
+							if((Integer)(sm.get("grade"))>0) {
+						%>	
+						<a href='modifyempActive.jsp?empId=<%=(String)(m.get("empId"))%>&active=<%=(String)(m.get("active"))%>'> 
+						<%=(String)(m.get("active"))%>
+						</a>					
+						<!-- 값을 넘겨줄 때 empId의 값을 포함시키지 않고 넘겨서 파라미터에 null이 계속 들어감. 값을 보내는 페이지에서 get방식과 post방식 까먹지 말기. -->					
+						<% 
+						}
+						%>
+						</td>
 					</tr>
 					<%
 					}
