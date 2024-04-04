@@ -99,7 +99,7 @@
 	
 	
 	
-	String sql3="SELECT goods_no no, category, goods_title title,goods_content content, goods_price price, goods_amount amount,(SELECT COUNT(*) FROM goods) AS cnt FROM goods ORDER BY goods_no DESC;";
+	String sql3="SELECT goods_no no, category, goods_title title,left(goods_content,500)content, goods_price price, goods_amount amount,(SELECT COUNT(*) FROM goods) AS cnt FROM goods ORDER BY goods_no DESC;";
 	PreparedStatement stmt3 = null;
 	ResultSet rs3 = null;
 	stmt3 = conn.prepareStatement(sql3);
@@ -124,7 +124,6 @@
 
 %>
 
-<!-- Model Layer -->
 <!DOCTYPE html>
 <html>
 	<head>
@@ -162,7 +161,7 @@
 		<%
 			for(HashMap m0 : categoryList0) {
 		%>
-		<a href="/shop/emp/goodsList.jsp?category=<%=(String)(m0.get("category"))%>">
+		<a href="/shop/emp/goodsList.jsp?category=<%=(String)(m0.get("category"))%>&totalRow=<%=(Integer)(m0.get("cnt"))%>">
 					<%=(String)(m0.get("category"))%>
 					(<%=(Integer)(m0.get("cnt"))%>)
 				</a>
@@ -176,37 +175,37 @@
 	<div>
 	<ul class="pagination justify-content-center">
 
+
 			<%
 			if (currentPage > 1) {
 			%>
 			
-			<li class="page-item"><a class="page-link"
-				href="./goodsList.jsp?currentPage=1">처음페이지</a></li>
-			<li class="page-item"><a class="page-link"
-				href="./goodsList.jsp?currentPage=<%=currentPage - 1%>">이전페이지</a></li>
-				
+			<li class="page-item"><a class="page-link"href="./goodsList.jsp?currentPage=<%=currentPage - 1%>&category=<%=category %>&totalRow=<%=totalRow%>">previous</a></li>				
 			<%
 			} else {
 			%>
-			
-			<li class="page-item disabled"><a class="page-link"
-				href="./goods.jsp?currentPage=1">처음페이지</a></li>
-			<li class="page-item disabled"><a class="page-link"
-				href="./goodsList.jsp?currentPage=<%=currentPage - 1%>">이전페이지</a></li>
+			<li class="page-item"><a class="page-link">previous</a></li>
+						
+			<% 
+			}
+			%>		
+			<li class="page-item"><a class="page-link"><%=currentPage%></a></li>
 				
 			<%
-			}
 			if (currentPage < lastPage) {
 			%>
 			
-			<li class="page-item"><a class="page-link"
-				href="./goodsList.jsp?currentPage=<%=currentPage + 1%>">다음페이지</a></li>
-			<li class="page-item"><a class="page-link"
-				href="./goodsList.jsp?currentPage=<%=lastPage%>">마지막페이지</a></li>
-				
+			<li class="page-item"><a class="page-link"href="./goodsList.jsp?currentPage=<%=currentPage + 1%>&category=<%=category %>&totalRow=<%=totalRow%>">next</a></li>
+							
+			<%
+			}else{
+			%>	
+				<li class="page-item"><a class="page-link">next</a></li>
+							
 			<%
 			}
 			%>
+			
 		</ul>
 	</div>
 	
@@ -214,44 +213,50 @@
 		if(category == null){ //카테고리의 값이  null일때 
 			for(HashMap m2: categoryList2){
 	%>
-	<div>
-		<div>
-			번호:<%=(Integer) (m2.get("no"))%></div>
-		<div>
-			카테고리:<%=(String) (m2.get("category"))%></div>
-		<div>
-			제목:<%=(String) (m2.get("title"))%></div>
-		<div>
-			내용:<%=(String) (m2.get("content"))%></div>
-		<div>
-			가격:<%=(Integer) (m2.get("price"))%></div>
-		<div>
-			수량:<%=(Integer) (m2.get("amount"))%></div>
+
+	<div class="container text-center">
+		<div class="row row-cols-3">
+			<div class="col">
+				번호:<%=(Integer) (m2.get("no"))%></div>
+			<div class="col">
+				카테고리:<%=(String) (m2.get("category"))%></div>
+			<div class="col">
+				제목:<%=(String) (m2.get("title"))%></div>
+			<div class="col">
+				내용:<%=(String) (m2.get("content"))%></div>
+			<div class="col">
+				가격:<%=(Integer) (m2.get("price"))%></div>
+			<div class="col">
+				수량:<%=(Integer) (m2.get("amount"))%></div>
+		</div>
+
 	</div>
+
 	<%
 		}
 	}else{ //카테고리의 값이 null이 아닐때
 		for(HashMap m1: categoryList1){
 	%>
-	<div>
-		<div>
-			번호 :
-			<%=(Integer) (m1.get("no"))%></div>
-		<div>
-			카테고리 :
-			<%=(String) (m1.get("category"))%></div>
-		<div>
-			제목 :
-			<%=(String) (m1.get("title"))%></div>
-		<div>
-			내용 :
-			<%=(String) (m1.get("content"))%></div>
-		<div>
-			가격 :
-			<%=(Integer) (m1.get("price"))%></div>
-		<div>
-			수량 :
-			<%=(Integer) (m1.get("amount"))%></div>
+	<div class="container text-center">
+		<div class="row row-cols-3">
+			<div class="col">
+				번호 :
+				<%=(Integer) (m1.get("no"))%></div>
+			<div class="col">
+				카테고리 :
+				<%=(String) (m1.get("category"))%></div>
+			<div class="col">
+				제목 :
+				<%=(String) (m1.get("title"))%></div>
+			<div class="col">
+				내용 :
+				<%=(String) (m1.get("content"))%></div>
+			<div class="col">
+				가격 :
+				<%=(Integer) (m1.get("price"))%></div>
+			<div class="col">
+				수량 :
+				<%=(Integer) (m1.get("amount"))%></div>
 
 		</div>
 	</div>

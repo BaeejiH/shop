@@ -1,6 +1,5 @@
 <%@ page import="java.net.*"%>
 <%@ page import = "java.util.*" %>
-<%@page import="java.net.URLEncoder"%>
 <%@page import="java.sql.*" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -11,23 +10,25 @@
 		response.sendRedirect("/shop/emp/empLoginForm.jsp?errMsg=" + errMsg);
 		return;
 	}
-	
-%>
-<%
-	request.getParameter("UTF-8");
+	request.getParameter("UTF-8");	
+
 	HashMap<String, Object> loginEmp = (HashMap<String, Object>)(session.getAttribute("loginEmp"));
+
 	String category = request.getParameter("category");
 	String empId = (String)(loginEmp.get("empId"));
 	String goodsTitle = request.getParameter("goodsTitle");
 	String goodsContent = request.getParameter("goodsContent");
 	int	goodsPrice = Integer.parseInt(request.getParameter("goodsPrice"));
 	int goodsAmount = Integer.parseInt(request.getParameter("goodsAmount"));
-	
-	String sql = null;
-	sql = "insert into goods (category, emp_id, goods_title, goods_content, goods_price, goods_amount) values (?, ?, ?, ?, ?, ?)";
+%>
+
+<% 
+	Connection conn = null;
 	Class.forName("org.mariadb.jdbc.Driver");
-	Connection conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
+	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
 	PreparedStatement stmt = null;
+	
+	String sql = "insert into goods (category, emp_id, goods_title, goods_content, goods_price, goods_amount) values (?, ?, ?, ?, ?, ?)";
 	stmt = conn.prepareStatement(sql);
 	stmt.setString(1, category);
 	stmt.setString(2, empId);
