@@ -20,8 +20,8 @@
 	String empId = (String)(loginEmp.get("empId"));
 	String goodsTitle = request.getParameter("goodsTitle");
 	String goodsContent = request.getParameter("goodsContent");
-	String goodsPrice = request.getParameter("goodsPrice");
-	String goodsAmount = request.getParameter("goodsAmount");
+	int	goodsPrice = Integer.parseInt(request.getParameter("goodsPrice"));
+	int goodsAmount = Integer.parseInt(request.getParameter("goodsAmount"));
 	
 	String sql = null;
 	sql = "insert into goods (category, emp_id, goods_title, goods_content, goods_price, goods_amount) values (?, ?, ?, ?, ?, ?)";
@@ -33,8 +33,8 @@
 	stmt.setString(2, empId);
 	stmt.setString(3, goodsTitle);
 	stmt.setString(4, goodsContent);
-	stmt.setString(5, goodsPrice);
-	stmt.setString(6, goodsAmount);
+	stmt.setInt(5, goodsPrice);
+	stmt.setInt(6, goodsAmount);
 	System.out.println(stmt);
 	int row = 0;
 	row = stmt.executeUpdate();
@@ -49,3 +49,4 @@
 	}
 	
 	response.sendRedirect("/shop/emp/goodsList.jsp");
+%>	

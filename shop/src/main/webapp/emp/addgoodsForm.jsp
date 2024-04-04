@@ -11,6 +11,7 @@
 %>
 
 <%
+	String category = request.getParameter("category");
 	Class.forName("org.mariadb.jdbc.Driver");
 	Connection conn = null;
 	PreparedStatement stmt1 = null;
@@ -43,7 +44,7 @@
 	</div>	
 	
 	<h1>상품등록</h1>
-	<form method="post" action="/shop/emp/addgoodsAction.jsp">
+	<form method="post" action="/shop/emp/addgoodsAction.jsp?category=<%=category%>">
 	<div>
 		category:
 		<select>
@@ -66,7 +67,7 @@
 	
 	<div>
 		goodsprice :
-		<input type="number" name="goodsprice">	
+		<input type="number" name="goodsPrice">	
 	</div>
 	
 	<div>
