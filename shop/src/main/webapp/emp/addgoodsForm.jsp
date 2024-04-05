@@ -44,10 +44,10 @@
 	</div>	
 	
 	<h1>상품등록</h1>
-	<form method="post" action="/shop/emp/addgoodsAction.jsp?category=<%=category%>">
+	<form method="post" action="/shop/emp/addgoodsAction.jsp" enctype="multipart/form-data">
 	<div>
 		category:
-		<select>
+		<select name="category">
 			<option value="">선택</option>
 			<%
 				for(String c : categoryList) {
@@ -55,7 +55,7 @@
 					<option value="<%=c%>"><%=c%></option>
 			<%
 				}
-			 %>
+			%>
 		</select>
 	
 	</div>	
@@ -66,6 +66,11 @@
 	</div>
 	
 	<div>
+		goodsImage :
+		<input type="file" name="goodsImg">	
+	</div>
+	
+	<div>	
 		goodsprice :
 		<input type="number" name="goodsPrice">	
 	</div>
@@ -79,6 +84,7 @@
 		goodsContent:
 		<textarea rows="5" clos="50" name="goodsContent"></textarea>
 	</div>
+	
 	
 	<button type="submit">상품등록</button>
 	

@@ -14,7 +14,6 @@
 %>
 
 <%
-	
 	String category = request.getParameter("category");
 
 	int currentPage = 1;
@@ -22,7 +21,7 @@
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
 	
-	int rowPerPage = 10;
+	int rowPerPage = 4;
 	int startRow = (currentPage-1)*rowPerPage;
 	
 	Class.forName("org.mariadb.jdbc.Driver");
@@ -46,11 +45,14 @@
 	      lastPage = lastPage + 1;
 	   }   
 	   //전체 페이지를 현재 보이는 페이지로 나눴을때 0이 아니라면 +1을 해준다.
-	   // 107페이지라고 가정하면 현재 보이는 페이지 10페이지로 나눴을 때 10 하고 나머지 7. 그럼으로 10페이지 +나머지 한페이지 = 11페이지.
+	   // 107페이지라고 가정하면 현재 보이는 페이지 10페이지로 나눴을 때 10 하고 나머지 7. 그럼으로 10페이지 +나머지 한페이지 = 11페이지.	   	   
 %>	
+
+
 
 <!--ㅡmodel layer -->
 <% 
+	
 	Class.forName("org.mariadb.jdbc.Driver");
 	PreparedStatement stmt1 = null;
 	ResultSet rs1 = null;
@@ -62,7 +64,9 @@
 	
 	ArrayList<HashMap<String, Object>> categoryList0 = new ArrayList<HashMap<String, Object>>();
 	
+
 	while(rs1.next()){
+	
 		HashMap<String, Object> m0 = new HashMap<String, Object>();
 		m0.put("category", rs1.getString("category"));
 		m0.put("cnt", rs1.getInt("cnt"));
@@ -73,7 +77,7 @@
 	System.out.println("categoryList");
 	
 	
-	String sql2= "select goods_no no, category, goods_title title,left(goods_content,500)content, goods_price price, goods_amount amount FROM goods WHERE category = ? ORDER BY goods_no DESC limit ?,?;";
+	String sql2= "select goods_no no, category, goods_title title, filename,left(goods_content,500)content, goods_price price, goods_amount amount FROM goods WHERE category = ? ORDER BY goods_no DESC limit ?,?;";
 	Class.forName("org.mariadb.jdbc.Driver");
 	PreparedStatement stmt2 = null;
 	ResultSet rs2 = null;
@@ -84,22 +88,30 @@
 	stmt2.setInt(3,rowPerPage);
 	rs2 = stmt2.executeQuery(); 
 	
-	ArrayList<HashMap<String, Object>> categoryList1 = new ArrayList<HashMap<String, Object>>();
 	
+	
+	//String imagePath = rs2.getString("filename");
+	
+	
+	ArrayList<HashMap<String, Object>> categoryList1 = new ArrayList<HashMap<String, Object>>();
 	while(rs2.next()){
-		HashMap<String, Object> m1 = new HashMap<String, Object>();
+		
+		String imagePath = rs2.getString("filename"); 
+		HashMap<String, Object> m1 = new HashMap<String, Object>();	
 		m1.put("no", rs2.getInt("no"));
 		m1.put("category", rs2.getString("category"));
 		m1.put("title", rs2.getString("title"));
 		m1.put("content", rs2.getString("content"));
 		m1.put("price", rs2.getInt("price"));
 		m1.put("amount", rs2.getInt("amount"));
+		m1.put("imagePath", imagePath); 
+		
 		categoryList1.add(m1);
 	}
 	
 	
 	
-	String sql3="SELECT goods_no no, category, goods_title title,left(goods_content,500)content, goods_price price, goods_amount amount,(SELECT COUNT(*) FROM goods) AS cnt FROM goods ORDER BY goods_no DESC;";
+	String sql3="SELECT goods_no no, category, goods_title title, filename,left(goods_content,500)content, goods_price price, goods_amount amount,(SELECT COUNT(*) FROM goods) AS cnt FROM goods ORDER BY goods_no DESC;";
 	PreparedStatement stmt3 = null;
 	ResultSet rs3 = null;
 	stmt3 = conn.prepareStatement(sql3);
@@ -109,6 +121,7 @@
 	= new ArrayList<HashMap<String, Object>>();
 	
 	while(rs3.next()){
+		String imagePath = rs3.getString("filename");
 		HashMap<String, Object> m2 = new HashMap<String, Object>();
 		m2.put("no", rs3.getInt("no"));
 		m2.put("category", rs3.getString("category"));
@@ -116,12 +129,11 @@
 		m2.put("content", rs3.getString("content"));
 		m2.put("price", rs3.getInt("price"));
 		m2.put("amount", rs3.getInt("amount"));
+		m2.put("imagePath", imagePath); 
 		categoryList2.add(m2);
 	}
 	
-	
 		
-
 %>
 
 <!DOCTYPE html>
@@ -136,7 +148,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">   				
 		
-		
+<style>
+.content_wrap{
+  width: 200px;
+  height: fit-content;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 5px;
+  grid-row-gap: 5px;
+}
+</style>		
 		
 		
 		
@@ -171,7 +192,7 @@
 		%>				
 	
 	</div>
-	
+		
 	<div>
 	<ul class="pagination justify-content-center">
 
@@ -212,22 +233,25 @@
 	<%
 		if(category == null){ //카테고리의 값이  null일때 
 			for(HashMap m2: categoryList2){
+		
 	%>
 
-	<div class="container text-center">
-		<div class="row row-cols-3">
+	<div class="container text-center border border-dark">
+		<div class="row row-cols-3">	
 			<div class="col">
 				번호:<%=(Integer) (m2.get("no"))%></div>
 			<div class="col">
 				카테고리:<%=(String) (m2.get("category"))%></div>
 			<div class="col">
 				제목:<%=(String) (m2.get("title"))%></div>
+			<div class="col image-box">
+				이미지:<img src="<%=request.getContextPath()%>/upload/<%=(String) (m2.get("imagePath"))%>" class="image-thumbnail"></div>
 			<div class="col">
 				내용:<%=(String) (m2.get("content"))%></div>
 			<div class="col">
 				가격:<%=(Integer) (m2.get("price"))%></div>
 			<div class="col">
-				수량:<%=(Integer) (m2.get("amount"))%></div>
+				수량:<%=(Integer) (m2.get("amount"))%></div>				
 		</div>
 
 	</div>
@@ -237,33 +261,46 @@
 	}else{ //카테고리의 값이 null이 아닐때
 		for(HashMap m1: categoryList1){
 	%>
-	<div class="container text-center">
-		<div class="row row-cols-3">
-			<div class="col">
+	
+			<div>
+				<img src="<%=request.getContextPath()%>/upload/<%=(String) (m1.get("imagePath"))%>"></div>
+				
+			<div >
+			<div >
 				번호 :
 				<%=(Integer) (m1.get("no"))%></div>
-			<div class="col">
+			<div>
 				카테고리 :
 				<%=(String) (m1.get("category"))%></div>
-			<div class="col">
+			<div>
 				제목 :
 				<%=(String) (m1.get("title"))%></div>
-			<div class="col">
+			<div>
 				내용 :
 				<%=(String) (m1.get("content"))%></div>
-			<div class="col">
+			<div>
 				가격 :
 				<%=(Integer) (m1.get("price"))%></div>
-			<div class="col">
+			<div>
 				수량 :
 				<%=(Integer) (m1.get("amount"))%></div>
+			</div>	
+			
 
-		</div>
-	</div>
+			
+				
 
 	<%
 		}
 	}
+	%>
+	
+	
+	
+	<%
+	
+	
+	
 	%>
 	
 
