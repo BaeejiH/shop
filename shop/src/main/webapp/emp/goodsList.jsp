@@ -22,7 +22,7 @@
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
 	
-	int rowPerPage = 10;
+	int rowPerPage = 20;
 	int startRow = (currentPage-1)*rowPerPage;
 	
 	Class.forName("org.mariadb.jdbc.Driver");
@@ -126,7 +126,7 @@
 	
 	
 	
-	String sql3="SELECT goods_no no, category, goods_title title,left(goods_content,500)content, goods_price price, goods_amount amount,(SELECT COUNT(*) FROM goods) AS cnt FROM goods ORDER BY goods_no DESC limit ?,?;";
+	String sql3="SELECT goods_no no, category, goods_title title,filename,left(goods_content,500)content, goods_price price, goods_amount amount,(SELECT COUNT(*) FROM goods) AS cnt FROM goods ORDER BY goods_no DESC limit ?,?;";
 	PreparedStatement stmt3 = null;
 	ResultSet rs3 = null;
 	stmt3 = conn.prepareStatement(sql3);
@@ -138,6 +138,7 @@
 	= new ArrayList<HashMap<String, Object>>();
 	
 	while(rs3.next()){
+		String imagePath = rs3.getString("filename");
 		HashMap<String, Object> m2 = new HashMap<String, Object>();
 		m2.put("no", rs3.getInt("no"));
 		m2.put("category", rs3.getString("category"));
@@ -145,6 +146,7 @@
 		m2.put("content", rs3.getString("content"));
 		m2.put("price", rs3.getInt("price"));
 		m2.put("amount", rs3.getInt("amount"));
+		m2.put("imagePath", imagePath); 
 		categoryList2.add(m2);
 	}
 	
@@ -163,34 +165,69 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">   				
-			
-			
-			
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">   
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">				
+
+
+
+<style>
+	.menu{width: auto; height: 60px; background-color: gray;}
+	.menu-text{font-size: 15px; color:#888}
+	.top-menu{width: 300px; height: 50px;}
+	.ss{color:black;}
+
+</style>
 			
 			
 			
 		</head>
 	<body>
 	
+	  <div class="text-center d-flex align-items-end justify-content-center">
+
+                <div>
+
+                    <div><H2>애견 용품</H2></div>
+
+                    <div>dog</div>
+
+                </div>
+
+            </div>
+            
+  
+            
+                   
+            
 	<!-- 메인 메뉴 -->
-		<div>
-			<jsp:include page="/emp/inc/empmenu.jsp"></jsp:include>
-		</div>	
+	  <nav class="top-menu d-flex align-items-end text-right">
+		<ul class="nav d-flex nav-fill w-100 ">
+			<li class="nav-item"><jsp:include page="/emp/inc/empmenu.jsp"></jsp:include></li>
+		
+		</ul>
+		</nav>
+		
+		
+		
 		
 	<!-- 상품등록 -->
 		<div>
 			<a href="./addgoodsForm.jsp">상품등록</a>
 		</div>
+		
 	
+
 	
 		<!-- 서브 메뉴 카테고리별 상품리스트 -->
-		<div>
-			<a href="/shop/emp/goodsList.jsp">전체</a>
+		
+		
+		
+		 	<nav class="menu d-flex align-items-center mt-3 ">
+			<a href="/shop/emp/goodsList.jsp"  class="ss nav nav-fill w-100 d-flex">전체</a>
 			<%
 				for(HashMap m0 : categoryList0) {
 			%>
-			<a href="/shop/emp/goodsList.jsp?category=<%=(String)(m0.get("category"))%>&totalRow=<%=(Integer)(m0.get("cnt"))%>">
+			<a href="/shop/emp/goodsList.jsp?category=<%=(String)(m0.get("category"))%>&totalRow=<%=(Integer)(m0.get("cnt"))%>" class="ss nav nav-fill w-100 d-flex">
 						<%=(String)(m0.get("category"))%>
 						(<%=(Integer)(m0.get("cnt"))%>)
 					</a>
@@ -198,9 +235,98 @@
 			<%
 				}
 			%>				
+			
+			</nav>
 		
+		
+		
+		
+		
+	
+		<%
+				if (category == null) { //카테고리의 값이  null일때 
+					int counter = 0;{
+		%>
+
+<div class="container">
+    <div class="row">
+        <% 
+            for (HashMap m2 : categoryList2) {
+        %>
+
+        
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                <img src="<%=request.getContextPath()%>/upload/<%=(String) (m2.get("imagePath"))%>" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">제목: <%=(String) (m2.get("title"))%></h5>
+                    <p class="card-text">
+                        번호: <%=(Integer) (m2.get("no"))%><br> 
+                        카테고리: <%=(String) (m2.get("category"))%><br>
+                        가격: <%=(Integer) (m2.get("price"))%>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <% 
+                counter++; // 이미지 카운터를 증가시킨다.
+                // 이미지 카운터가 4개 일때 새로운 행을시작한다. 이미지 가로 4개로 5줄. rowperpage 20으로 설정.
+                if (counter % 4 == 0) { 
+        %>
+    </div>
+    <div class="row">
+        <% 
+                }
+            } 
+        %>
+    </div>
+</div>
+
+	<%
+	}
+	%>
+				
+	<%
+					} else { //카테고리의 값이 null이 아닐때
+					for (HashMap m1 : categoryList1) {
+					%>
+		<div class="container text-center">
+			<div class="row row-cols-3">
+			
+			<div class="col image-box">
+				<img src="<%=request.getContextPath()%>/upload/<%=(String) (m1.get("imagePath"))%>"></div>
+			
+			
+				<div class="col">
+					번호 :
+					<%=(Integer) (m1.get("no"))%></div>
+				<div class="col">
+					카테고리 :
+					<%=(String) (m1.get("category"))%></div>
+				<div class="col">
+					제목 :
+					<%=(String) (m1.get("title"))%></div>
+				<div class="col">
+					내용 :
+					<%=(String) (m1.get("content"))%></div>
+				<div class="col">
+					가격 :
+					<%=(Integer) (m1.get("price"))%></div>
+				<div class="col">
+					수량 :
+					<%=(Integer) (m1.get("amount"))%></div>
+	
+			</div>
 		</div>
+	
+		<%
+			}
+		}
+		%>
 		
+		
+			
 		<div>
 		<ul class="pagination justify-content-center">
 
@@ -241,67 +367,6 @@
 		</ul>
 		</div>
 		
-		<%
-				if (category == null) { //카테고리의 값이  null일때 
-					for (HashMap m2 : categoryList2) {
-				%>
-	
-		<div class="container text-center">
-			<div class="row row-cols-3">
-				<div class="col">
-					번호:<%=(Integer) (m2.get("no"))%></div>
-				<div class="col">
-					카테고리:<%=(String) (m2.get("category"))%></div>
-				<div class="col">
-					제목:<%=(String) (m2.get("title"))%></div>
-				<div class="col">
-					내용:<%=(String) (m2.get("content"))%></div>
-				<div class="col">
-					가격:<%=(Integer) (m2.get("price"))%></div>
-				<div class="col">
-					수량:<%=(Integer) (m2.get("amount"))%></div>
-			</div>
-	
-		</div>
-	
-		<%
-			}
-		}else{ //카테고리의 값이 null이 아닐때
-			for(HashMap m1: categoryList1){
-		%>
-		<div class="container text-center">
-			<div class="row row-cols-3">
-			
-			<div class="col image-box">
-				이미지:<img src="<%=request.getContextPath()%>/upload/<%=(String) (m1.get("imagePath"))%>"></div>
-			
-			
-				<div class="col">
-					번호 :
-					<%=(Integer) (m1.get("no"))%></div>
-				<div class="col">
-					카테고리 :
-					<%=(String) (m1.get("category"))%></div>
-				<div class="col">
-					제목 :
-					<%=(String) (m1.get("title"))%></div>
-				<div class="col">
-					내용 :
-					<%=(String) (m1.get("content"))%></div>
-				<div class="col">
-					가격 :
-					<%=(Integer) (m1.get("price"))%></div>
-				<div class="col">
-					수량 :
-					<%=(Integer) (m1.get("amount"))%></div>
-	
-			</div>
-		</div>
-	
-		<%
-			}
-		}
-		%>
 		
 	
 	
