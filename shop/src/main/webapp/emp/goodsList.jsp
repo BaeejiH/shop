@@ -215,6 +215,9 @@
 			<a href="./addgoodsForm.jsp">상품등록</a>
 		</div>
 		
+		
+		
+		
 	
 
 	
@@ -263,7 +266,9 @@
                     <p class="card-text">
                         번호: <%=(Integer) (m2.get("no"))%><br> 
                         카테고리: <%=(String) (m2.get("category"))%><br>
-                        가격: <%=(Integer) (m2.get("price"))%>
+                        가격: <%=(Integer) (m2.get("price"))%>                   
+						<a href="./deletegoodsAction.jsp?no=<%=m2.get("no")%>">상품삭제</a>
+			
                     </p>
                 </div>
             </div>
@@ -316,7 +321,9 @@
 				<div class="col">
 					수량 :
 					<%=(Integer) (m1.get("amount"))%></div>
-	
+				<div>
+				<a href="./deletegoodsAction.jsp?no=<%=m1.get("no")%>">상품삭제</a>
+				</div>	
 			</div>
 		</div>
 	
