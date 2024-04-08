@@ -166,15 +166,68 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">   
-	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">				
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">				
+	<link rel="precons.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatinect" href="https://fontc.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap" rel="stylesheet">
+
+
+
+
+
+
 
 
 
 <style>
-	.menu{width: auto; height: 60px; background-color: gray;}
-	.menu-text{font-size: 15px; color:#888}
-	.top-menu{width: 300px; height: 50px;}
-	.ss{color:black;}
+.menu {
+	border-bottom-width:1px; 
+	border-bottom-style:solid;
+	border-bottom-color:gray;
+	width: auto;
+	height: 60px;
+}
+
+.foot {
+	background-color:#DAD9FF;
+	width: auto;
+	height: 1300px;
+}
+
+.menu-text {
+	font-size: 15px;
+	color: #888
+}
+
+.top-menu {
+	width: 300px;
+	height: 50px;
+}
+
+.ss {
+	color: black;
+}
+
+.zzz {
+	width: 100px;
+	height: auto;
+}
+
+.na {
+    margin-left: 300px;
+}
+
+.nb {
+    margin-left: 100px;
+}
+
+.ccc {
+  font-family: "Bagel Fat One", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
 
 </style>
 			
@@ -183,13 +236,37 @@
 		</head>
 	<body>
 	
+	
+	
+	<ul class="nav">
+			<li class="nav-item"><jsp:include page="/emp/inc/empmenu.jsp"></jsp:include></li>
+			
+		
+		</ul>
+	
+	
+	
 	  <div class="text-center d-flex align-items-end justify-content-center">
 
                 <div>
 
-                    <div><H2>애견 용품</H2></div>
+                    <div><H2><img src="/shop/upload/logo.png" class="zzz"></H2></div>
+                    
+          
 
-                    <div>dog</div>
+                </div>
+
+            </div>
+	
+	
+	
+	  <div class="text-center d-flex align-items-end justify-content-center">
+
+                <div>
+
+                    <div><H2 class="ccc">애견 용품</H2></div>
+
+                    <div class="ccc">dog</div>
 
                 </div>
 
@@ -199,23 +276,14 @@
             
                    
             
-	<!-- 메인 메뉴 -->
-	  <nav class="top-menu d-flex align-items-end text-right">
-		<ul class="nav d-flex nav-fill w-100 ">
-			<li class="nav-item"><jsp:include page="/emp/inc/empmenu.jsp"></jsp:include></li>
-		
-		</ul>
-		</nav>
-		
-		
-		
+
+				
 		
 	<!-- 상품등록 -->
-		<div>
-			<a href="./addgoodsForm.jsp">상품등록</a>
-		</div>
-		
-		
+	
+
+	
+			
 		
 		
 	
@@ -225,14 +293,13 @@
 		
 		
 		
-		 	<nav class="menu d-flex align-items-center mt-3 ">
-			<a href="/shop/emp/goodsList.jsp"  class="ss nav nav-fill w-100 d-flex">전체</a>
+		 	<nav class="kkk menu d-flex align-items-center mt-3">
+			<a href="/shop/emp/goodsList.jsp"  class="nb ss nav nav-fill w-100 d-flex">전체</a>
 			<%
 				for(HashMap m0 : categoryList0) {
 			%>
-			<a href="/shop/emp/goodsList.jsp?category=<%=(String)(m0.get("category"))%>&totalRow=<%=(Integer)(m0.get("cnt"))%>" class="ss nav nav-fill w-100 d-flex">
-						<%=(String)(m0.get("category"))%>
-						(<%=(Integer)(m0.get("cnt"))%>)
+			<b><a href="/shop/emp/goodsList.jsp?category=<%=(String)(m0.get("category"))%>" class="na ss nav nav-fill w-100 d-flex">
+						<%=(String)(m0.get("category"))%></b>					
 					</a>
 					
 			<%
@@ -242,7 +309,7 @@
 			</nav>
 		
 		
-		
+		<br>		<br>		<br>		<br>		<br>
 		
 		
 	
@@ -258,7 +325,7 @@
         %>
 
         
-        <div class="col-md-3 mb-4">
+        <div class="col-md-3 mb-4 ">
             <div class="card h-100">
                 <img src="<%=request.getContextPath()%>/upload/<%=(String) (m2.get("imagePath"))%>" class="card-img-top" alt="...">
                 <div class="card-body">
@@ -373,6 +440,18 @@
 
 		</ul>
 		</div>
+		
+
+		<nav class="foot">
+		<br><br><br><br><br>
+			<div class="container text-center">전화번호: 02-xxx-xxxx</div>
+			<div class="container text-center">전화번호: 02-xxx-xxxx</div>
+			<div class="container text-center">전화번호: 02-xxx-xxxx</div>
+			<div class="container text-center">전화번호: 02-xxx-xxxx</div>
+			<div class="container text-center">전화번호: 02-xxx-xxxx</div>
+			<div class="container text-center">전화번호: 02-xxx-xxxx</div>
+			<div class="container text-center">전화번호: 02-xxx-xxxx</div>
+		</nav>
 		
 		
 	
