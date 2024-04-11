@@ -31,7 +31,7 @@
 	<br>  
 	<span>
 	<!-- 개인정보수정 -->
-		<a href="/shop/emp/empOne.jsp" style="color:black">
+		<a href="/shop/emp/empOne.jsp?empId=<%=(String)(loginMember.get("empId"))%>" style="color:black">
 		★<%=(String)(loginMember.get("empName"))%>★님
 		</a> 반갑습니다
 	</span>
