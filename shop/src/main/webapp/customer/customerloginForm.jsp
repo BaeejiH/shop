@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	//인증분기 :세션변수 이름 -loginEmp
+	//인증분기 
 	if(session.getAttribute("logincustomer") != null) {
-		response.sendRedirect("/shop/customer/goodList.jsp");
+		response.sendRedirect("/shop/customer/customerList.jsp");
 		return; //로그인이 된 상태이기 때문에 null이 아닐시에 List로 이동
 	}
 %>
@@ -44,15 +44,15 @@
                <table>
                   <tr>
                      <th>Id:</th>
-                     <td><input type="text" name="customerID" class=form-control
+                     <td><input type="e" name="customerID" class=form-control
                         value="" placeholder="아이디"></td>   <br>
                   </tr> <br>
       
                   <tr>
                   <br>
                      <th>Pw:</th>
-                     <td><input type="password" name="customerpw"
-                        class=form-control value="customerpw" placeholder="비밀번호"></td>
+                     <td><input type="password" name="customerPW"
+                        class=form-control value="" placeholder="비밀번호"></td>
                   </tr>
                </table>
                <br>
@@ -61,9 +61,12 @@
               <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
               Loading...
             </button>
+             <a href="/shop/customer/addcustomerForm.jsp">회원가입</a>
             </form>
     </div>
     <div class="col">
+    
+   
      
     </div>
   </div>
