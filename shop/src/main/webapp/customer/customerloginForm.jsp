@@ -2,7 +2,7 @@
 <%
 	//인증분기 
 	if(session.getAttribute("logincustomer") != null) {
-		response.sendRedirect("/shop/customer/customerList.jsp");
+		response.sendRedirect("/shop/customer/customergoodsList.jsp");
 		return; //로그인이 된 상태이기 때문에 null이 아닐시에 List로 이동
 	}
 %>

@@ -3,11 +3,10 @@
 <%
 	//인증분기 
 	if(session.getAttribute("logincustomer") != null) {
-		response.sendRedirect("/shop/customer/customerList.jsp");
+		response.sendRedirect("/shop/customer/customergoodsList.jsp");
 		return; //로그인이 된 상태이기 때문에 null이 아닐시에 List로 이동
 	}
 %>
-
 
 <!DOCTYPE html>
 <html>
@@ -19,10 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">		
-		
-		
-		
-		
+				
 		
 	</head>
 <body>
@@ -35,8 +31,22 @@
 			<div class="col">
 				<h1 class="text-center">회원가입</h1>
 
+
+
+					<form method="post" action="/shop/customer/checkidAction.jsp">
+					
+					<div>checkId:<input type="text" name="checkID" value="" placeholder="email을 입력해 주세요"><button type="submit">중복확인</button></div>
+				
+				
+					</form>
+
+
+
+
+
 				<form method="post" action="/shop/customer/addcustomerAction.jsp">
 					<table class="table table-dark table-hover">
+										
 						<tr>
 							<td>Id:<input type="text" name="customerID"></td>
 						</tr>
