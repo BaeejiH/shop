@@ -33,12 +33,36 @@
 
 
 
-					<form method="post" action="/shop/customer/checkidAction.jsp">
-					
-					<div>checkId:<input type="text" name="checkID" value="" placeholder="email을 입력해 주세요"><button type="submit">중복확인</button></div>
-				
-				
-					</form>
+				<form method="post" action="/shop/customer/checkidAction.jsp">
+
+					<div>
+						checkId:<input type="text" name="checkID" value=""
+							placeholder="email을 입력해 주세요">
+						<button type="submit">중복확인</button>
+						
+						<div>
+						<%
+						String IDcheck = request.getParameter("IDcheck");
+						if ("d".equals(IDcheck)) {
+							out.println("이미 존재하는 이메일입니다.");
+						} else if ("a".equals(IDcheck)) {
+							out.println("사용 가능한 이메일입니다.");
+						} else {
+							out.println("이메일을 찾을 수 없습니다.");
+						}
+						%>
+						</div>
+
+
+
+
+
+
+
+					</div>
+
+
+				</form>
 
 
 

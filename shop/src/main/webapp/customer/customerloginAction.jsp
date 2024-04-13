@@ -54,7 +54,7 @@
 		System.out.println((String)(m.get("birth")));
 		System.out.println((String)(m.get("gender")));
 		
-		response.sendRedirect("./customerList.jsp");
+		response.sendRedirect("./customergoodsList.jsp");
 	} else {// 실패시 로그인폼으로
 		System.out.println("로그인실패");
 		String errMsg = URLEncoder.encode("아이디와 비밀번호를 확인해주세요", "utf-8");

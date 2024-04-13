@@ -14,6 +14,7 @@
 
 <%
 	String checkID = request.getParameter("checkID");
+	String IDcheck =""; // 아이디가 사용가능한지 여부를 보여주는 변수 설정.
 	
 	System.out.println(checkID+"<--checkmail");
 	
@@ -29,12 +30,14 @@
 	rs1 = stmt1.executeQuery();	
 	
 	
-	 if (rs1.next()) { 
-	        System.out.println("이미 존재하는 이메일 입니다");
-	    } else {
-	        System.out.println("사용 가능한 이메일 입니다");
+	 if (rs1.next()) { //중복된 이메일이 있음을 나타냄.
+	        IDcheck ="d";
+	    } else {//아니라면 사용 가능한 이메일이 있음을 나타냄.
+	    	IDcheck ="a";
 	    }    
 	
+		response.sendRedirect("/shop/customer/addcustomerForm.jsp?IDcheck="+IDcheck);
+
 %>
 
 
