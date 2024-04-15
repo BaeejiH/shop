@@ -24,12 +24,12 @@
 	ArrayList<HashMap<String, Object>> categorylist
 	= new ArrayList<HashMap<String, Object>>();
 
-// ResultSet -> ArrayList<HashMap<String, Object>>
-while(rs1.next()) {
-	HashMap<String, Object> m = new HashMap<String, Object>();
-	m.put("category", rs1.getString("category"));
-	m.put("createDate", rs1.getString("createDate"));
-	categorylist.add(m);	}
+	// ResultSet -> ArrayList<HashMap<String, Object>>
+	while(rs1.next()) {
+		HashMap<String, Object> m = new HashMap<String, Object>();
+		m.put("category", rs1.getString("category"));
+		m.put("createDate", rs1.getString("createDate"));
+		categorylist.add(m);	}
 
 
 %>

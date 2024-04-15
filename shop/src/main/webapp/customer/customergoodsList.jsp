@@ -294,11 +294,11 @@
 		
 		
 		 	<nav class="kkk menu d-flex align-items-center mt-3">
-			<a href="/shop/emp/goodsList.jsp"  class="nb ss nav nav-fill w-100 d-flex">전체</a>
+			<a href="/shop/customer/customergoodsList.jsp"  class="nb ss nav nav-fill w-100 d-flex">전체</a>
 			<%
 				for(HashMap m0 : categoryList0) {
 			%>
-			<b><a href="/shop/emp/goodsList.jsp?category=<%=(String)(m0.get("category"))%>" class="na ss nav nav-fill w-100 d-flex">
+			<b><a href="/shop/customer/customergoodsList.jsp?category=<%=(String)(m0.get("category"))%>" class="na ss nav nav-fill w-100 d-flex">
 						<%=(String)(m0.get("category"))%></b>					
 					</a>
 					
@@ -334,7 +334,7 @@
                         번호: <%=(Integer) (m2.get("no"))%><br> 
                         카테고리: <%=(String) (m2.get("category"))%><br>
                         가격: <%=(Integer) (m2.get("price"))%>                   
-						<a href="./deletegoodsAction.jsp?no=<%=m2.get("no")%>">상품삭제</a>
+						
 			
                     </p>
                 </div>
@@ -388,10 +388,7 @@
 				<div class="col">
 					수량 :
 					<%=(Integer) (m1.get("amount"))%></div>
-				<div>
-				<a href="./deletegoodsAction.jsp?no=<%=m1.get("no")%>">상품삭제</a>
-				</div>	
-			</div>
+				</div>
 		</div>
 	
 		<%

@@ -65,6 +65,7 @@
               <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
               Loading...
             </button>
+             <a href="/shop/emp/addempForm.jsp">회원가입</a>
             </form>
     </div>
     <div class="col">

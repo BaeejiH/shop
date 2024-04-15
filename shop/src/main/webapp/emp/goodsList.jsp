@@ -3,6 +3,7 @@
 <%@ page import="java.sql.*"%>
 <%@ page import="java.net.*"%>
 <%@ page import = "java.util.*" %>
+<%@ page import = "shop.DAO.GoodsDAO" %>
 
 <!-- controller layer -->
 <%
@@ -154,6 +155,16 @@
 		
 
 %>
+
+<!-- 
+	int startRow = 0;
+	int rowPerpage = 0;
+	ArrayList <HashMap<String, Object>>  
+ -->
+
+
+
+
 	
 	<!DOCTYPE html>
 	<html>
