@@ -78,7 +78,40 @@ public class EmpDAO {
 		conn.close();
 		return resultMap;
 	}
+	
+	
+	
+	//modifyACtion ->  쿼리 2개 존재
+	public static int updateemp (String emp_id) 
+				throws Exception{
+		
+		String sql1 = "update emp set active= 'ON' where emp_id= ?"; 
+		Class.forName("org.mariadb.jdbc.Driver");
+		PreparedStatement stmt1 = null;
+		int row =0;
+		Class.forName("org.mariadb.jdbc.Driver");
+		Connection conn = DBHelper.getConnection();
+		stmt1.setString(1, emp_id);
+		
+		
+			
+		String sql2 = "update emp set active= 'OFF' where emp_id= ?"; 
+		Class.forName("org.mariadb.jdbc.Driver");
+		PreparedStatement stmt2 = null;
+		stmt2.setString(1, emp_id);
+	
+		
+	}
+	
+	
+	
+	
+	
+	
+	
 }
+
+
 
 
 	
