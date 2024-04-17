@@ -6,6 +6,10 @@
 <%@ page import="java.nio.file.*" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <%@ page import = "shop.DAO.*"%>   
+    
+    
+    
 <%
 	//로그인 인증 분기
 	if(session.getAttribute("loginEmp") == null){
@@ -35,7 +39,11 @@
     filename = filename + ext;
 %>
 
-<% 
+<!-- 
+	//DAO로 바꾸면서 없어지는 페이지에서 사라지는 쿼리
+	//db연결 , 쿼리문 , 매개변수 변환 , 파일 업로드 분기문 모두 DAO로 이동
+	//DAO에서 filename이 null인지에 따라 분기문으로 다시 작성
+
 	Connection conn = null;
 	Class.forName("org.mariadb.jdbc.Driver");
 	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
@@ -67,16 +75,25 @@
 		os.close();
 		is.close();
     }
-    /*
+    
     파일 삭제 API
     File df = new File(filePath, rs.getString("filename"));
     df.delete()
-    */
-
-%>	
+    
+   
+ -->
+	
 
 <!-- Controller Layer -->
+	
+
 <%
+	int row = 0;
+	row = GoodsDAO.insertGoods(filename,category,empId,goodsTitle,goodsContent,goodsPrice,goodsAmount);
+	
+
+
+
     if(row == 1){
         response.sendRedirect("/shop/emp/goodsList.jsp");
     } else {

@@ -7,6 +7,44 @@ import java.util.*;
 
 
 public class GoodsDAO {
+	//addgoodsAction
+	//상품 추가 페이지
+	//param : filename, category, empId, goodsTitle, goodsContent,goodsPrice,goodsAmount
+	// filename이 null일때 나머지 정보들 추가 null이 아니면 전체 추가
+	public static int insertGoods(String filename, String category, String empId, String goodsTitle, String goodsContent, int goodsPrice, int goodsAmount) throws Exception {
+		 
+		Connection conn = DBHelper.getConnection();
+		PreparedStatement stmt1 = null;
+		if(filename == null){
+			String sql1 = "insert into goods (category, emp_id, goods_title, goods_content, goods_price, goods_amount) values (?, ?, ?, ?, ?, ?)";
+			stmt1 = conn.prepareStatement(sql1);
+			stmt1.setString(1, category);
+			stmt1.setString(2, empId);
+			stmt1.setString(3, goodsTitle);
+			stmt1.setString(4, goodsContent);
+			stmt1.setInt(5, goodsPrice);
+			stmt1.setInt(6, goodsAmount);
+			System.out.println(stmt1);
+		} else {
+			String sql1 = "insert into goods (category, emp_id, goods_title, goods_content, goods_price, goods_amount, file_name) values (?, ?, ?, ?, ?, ?, ?)";
+			stmt1 = conn.prepareStatement(sql1);
+			stmt1.setString(1, category);
+			stmt1.setString(2, empId);
+			stmt1.setString(3, goodsTitle);
+			stmt1.setString(4, goodsContent);
+			stmt1.setInt(5, goodsPrice);
+			stmt1.setInt(6, goodsAmount);
+			stmt1.setString(7, filename);
+			System.out.println(stmt1);
+		}
+
+		int row = 0;
+		row = stmt1.executeUpdate();
+
+		return row;
+		
+	}
+	
 	public static ArrayList<HashMap<String,Object>> selectGoodsList (int startRow , int rowPerpage)
 				throws Exception{
 		ArrayList<HashMap<String,Object>> list =
@@ -112,6 +150,10 @@ public class GoodsDAO {
 			
 			// 자원반납
 			return list;
+			
+			
+				
+			
 		}
 	
 	
