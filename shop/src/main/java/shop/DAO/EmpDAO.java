@@ -5,10 +5,55 @@ import java.util.HashMap;
 import java.sql.Connection;
 import java.sql.*;
 
+import java.sql.*;
 
+import java.sql.*;
 
-//emp 테이블을 CRUDksms STATIC 메서드의 컨테이너
 public class EmpDAO {
+	
+	//modifyemp 
+	// empList의 ON/OFF 값 변경 
+	// param :empID, active
+		
+	public static int updateEMP(String empId,String active) 
+		throws Exception{
+		 int row = 0;
+
+	        Class.forName("org.mariadb.jdbc.Driver"); 
+	        Connection conn = DBHelper.getConnection();
+	        
+	       
+	        // active의 상태 설정하기
+	        String nactive = active.equals("ON") ? "OFF" : "ON";
+	        
+	        // active 값을 변경하는 쿼리
+	        String sql = "UPDATE emp SET active = ? WHERE emp_id = ?";
+	        PreparedStatement stmt = conn.prepareStatement(sql);
+	        stmt.setString(1, nactive);
+	        stmt.setString(2, empId);
+	        
+	        // 업데이트 실행
+	        row = stmt.executeUpdate();
+	        
+	        // 자원 해제
+	        stmt.close();
+	        conn.close();
+	        
+	        return row;
+	        
+	   
+	          
+	            
+	        }
+	        
+
+	
+	
+		
+	
+		
+	
+	
 	public static int insertEmp(String empID,String empPW,String empName,String empJob,String hireDate, String active)
 		throws Exception{
 		int row =0;
@@ -78,37 +123,7 @@ public class EmpDAO {
 		conn.close();
 		return resultMap;
 	}
-	
-	
-	
-	//modifyACtion ->  쿼리 2개 존재
-	public static int updateemp (String emp_id) 
-				throws Exception{
 		
-		String sql1 = "update emp set active= 'ON' where emp_id= ?"; 
-		Class.forName("org.mariadb.jdbc.Driver");
-		PreparedStatement stmt1 = null;
-		int row =0;
-		Class.forName("org.mariadb.jdbc.Driver");
-		Connection conn = DBHelper.getConnection();
-		stmt1.setString(1, emp_id);
-		
-		
-			
-		String sql2 = "update emp set active= 'OFF' where emp_id= ?"; 
-		Class.forName("org.mariadb.jdbc.Driver");
-		PreparedStatement stmt2 = null;
-		stmt2.setString(1, emp_id);
-	
-		
-	}
-	
-	
-	
-	
-	
-	
-	
 }
 
 
