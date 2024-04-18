@@ -4,6 +4,7 @@
 <%@ page import="java.net.*"%>
 
 
+
 <%
 	// 인증분기	 : 세션변수 이름 - loginEmp
 	if(session.getAttribute("loginEmp") == null) {
@@ -69,35 +70,7 @@ while(rs1.next()) {
 
 </body>
 
-<%
-	// goodList에서 이름을 눌렀을때 정보 상세보기
-	//필요항목
-	//emp_id
-	//grade (아직 미정)
-	//emp_pw
-	//emp_name
-	//emp_job
-	//날짜??
-			
-	// 요청 받아야 하는 값	
-	//String emp_id = request.get.parameter("emp_id");
-	//Int garde = request.get.parameter("grade");
-	//String emp_pw = request.get.parameter("emp_pw");
-	//String emp_name = request.get.parameter("emp_name");
-	//String emp_job = request.get.parameter("emp_job");
-%>
-
-	<h1 class="text-center">Emp details</h1>
-
-
-
-
-
-
-
-
-
-
+<h1 class="text-center">Emp details</h1>
 
 <div class="container text-center">
   <div class="row">
@@ -136,14 +109,5 @@ while(rs1.next()) {
     </div>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
 
 </html>

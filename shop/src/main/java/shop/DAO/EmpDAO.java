@@ -11,6 +11,73 @@ import java.sql.*;
 
 public class EmpDAO {
 	
+	
+	//empOne.jsp
+	//param : empId, empName, empJob,hiredate,active
+	// goodList에서 이름을 눌렀을때 정보 상세보기
+	public static HashMap<String, Object>empOnelist(String empID) throws Exception{
+		HashMap<String, Object>Empdetalis = new HashMap<>();
+			
+		String sql1 = "select emp_id empId, emp_name empName, emp_job empJob, hire_date hireDate, active "
+				+ "from emp "
+				+ "where emp_id = ?";
+		Class.forName("org.mariadb.jdbc.Driver");
+		Connection conn = DBHelper.getConnection();
+		PreparedStatement stmt1 = conn.prepareStatement(sql1);
+		
+		stmt1 = conn.prepareStatement(sql1);
+		stmt1.setString(1,empID);
+				
+		ResultSet rs1 = stmt1.executeQuery(); 
+		
+		//출력 페이지의 while문 대체 
+		if (rs1.next()) {
+			Empdetalis.put("empId", rs1.getString("empId"));
+			Empdetalis.put("empName", rs1.getString("empName"));
+			Empdetalis.put("empJob", rs1.getString("empJob"));
+			Empdetalis.put("hireDate", rs1.getDate("hireDate"));
+			Empdetalis.put("active", rs1.getString("active"));
+        }
+        
+		return Empdetalis;
+		
+	}
+	
+	
+	
+
+	
+	//checkidempAction.jsp
+	//회원가입시 id 중복확인 기능
+	//param: checkid, IDcheck,emp_id
+	
+	public static String checkID(String emp_id) 
+				throws Exception{
+		Class.forName("org.mariadb.jdbc.Driver"); 
+        Connection conn = DBHelper.getConnection();
+        String IDcheck = ""; //아이디가 사용가능한지 여부를 보여주는 변수 설정.
+        
+        String sql1 = "select emp_id,emp_pw,emp_name,hire_date,active from emp where emp_id = ?"; 
+        PreparedStatement stmt1 = null;		
+    	stmt1 = conn.prepareStatement(sql1);
+    	stmt1.setString(1, emp_id);
+    	
+    	ResultSet rs1 = stmt1.executeQuery();	
+    	
+    	
+    	//emp_id가 데이터베이스에 있을 대 이메일이 중복되는지 판단하기 위한 분기문
+    	 if (rs1.next()) { //중복된 이메일이 있음을 나타냄.
+ 	        IDcheck ="d";
+ 	    } else {//아니라면 사용 가능한 이메일이 있음을 나타냄.
+ 	    	IDcheck ="a";
+ 	    }    
+    	
+    	 
+    	// IDcheck을 반환하는 이유는 값이 있는 emp_id가  db에 존재하는 여부를 나타내기 때문에.
+    	return IDcheck;
+	}
+	
+		
 	//modifyemp 
 	// empList의 ON/OFF 값 변경 
 	// param :empID, active
@@ -40,19 +107,8 @@ public class EmpDAO {
 	        conn.close();
 	        
 	        return row;
-	        
-	   
-	          
-	            
+	                    
 	        }
-	        
-
-	
-	
-		
-	
-		
-	
 	
 	public static int insertEmp(String empID,String empPW,String empName,String empJob,String hireDate, String active)
 		throws Exception{
@@ -72,17 +128,12 @@ public class EmpDAO {
 		stmt.setString(6,active);
 		
 		System.out.println(stmt+"<------stmt");
-		
-		
+			
 		row = stmt.executeUpdate();
-		
-		
-		
-		
+			
 		conn.close();
 		return row;
 	}
-	
 	
 	
 	//HashMap<String, Object> : null이면 로그인실패, 아니면 성공
@@ -97,8 +148,6 @@ public class EmpDAO {
 		Connection conn = DBHelper.getConnection();
 		
 		String sql1 = "select emp_id empID,emp_name empName,grade from emp where active='ON' and emp_id =? and emp_pw = password(?)";
-		Class.forName("org.mariadb.jdbc.Driver");
-		conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
 		PreparedStatement stmt1 = null;
 		ResultSet rs1 = null;
 		

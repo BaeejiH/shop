@@ -3,7 +3,7 @@
 <%@ page import="java.sql.*"%>
 <%@ page import="java.net.*"%>
 <%@ page import = "java.util.*" %>
-
+<%@ page import = "shop.DAO.*"%>
 <%
 	//인증분기 
 	if(session.getAttribute("loginemp") != null) {
@@ -14,7 +14,11 @@
 
 <%
 	String checkID = request.getParameter("checkID");
-	String IDcheck =""; // 아이디가 사용가능한지 여부를 보여주는 변수 설정.
+	String IDcheck = EmpDAO.checkID(checkID); // 아이디가 사용가능한지 여부를 보여주는 변수 설정.
+	
+	
+	/**
+	//DAO로 변경했을 때 사라지는 부분
 	
 	System.out.println(checkID+"<--checkmail");
 	
@@ -35,7 +39,7 @@
 	    } else {//아니라면 사용 가능한 이메일이 있음을 나타냄.
 	    	IDcheck ="a";
 	    }    
-	
+	**/
 		response.sendRedirect("/shop/emp/addempForm.jsp?IDcheck="+IDcheck);
 
 %>

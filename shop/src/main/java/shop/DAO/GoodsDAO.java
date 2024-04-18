@@ -7,6 +7,45 @@ import java.util.*;
 
 
 public class GoodsDAO {
+	
+	//deletegoodsACtion
+	//관리자가 상품을 삭제시키능 기능
+	//param : goods_No
+	//goods의 테이블행을 삭제하고 삭제된 행의 수를 반환
+	//반환 값은 delete문의 실행결과에 해당되는 삭제된 행의 수
+	
+	public static int deleteGoods(int goodsNo) 
+			throws Exception{
+		
+		int row = 0;
+		String sql1 = "DELETE FROM goods WHERE goods_no=?";
+		PreparedStatement stmt1 = null;
+		Connection con = null;
+		con = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
+		stmt1 = con.prepareStatement(sql1);
+		stmt1.setInt(1,goodsNo);
+		
+		row = stmt1.executeUpdate();
+		
+		return row;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//addgoodsAction
 	//상품 추가 페이지
 	//param : filename, category, empId, goodsTitle, goodsContent,goodsPrice,goodsAmount

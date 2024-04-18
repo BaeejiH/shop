@@ -2,6 +2,7 @@
 <%@ page import="java.sql.*"%>
 <%@ page import="java.net.*"%>
 <%@ page import = "java.util.*" %>
+<%@ page import = "shop.DAO.*"%>
 
 
 <%
@@ -16,23 +17,10 @@
 <%
 	
 	int goodsNo = Integer.parseInt(request.getParameter("no"));
-	System.out.println(goodsNo+"goodsnumber");
-
-
 	
-	String sql1 = "DELETE FROM goods WHERE goods_no=?";
-	PreparedStatement stmt1 = null;
-	Connection con = null;
-	con = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-	stmt1 = con.prepareStatement(sql1);
-	stmt1.setInt(1, goodsNo);
-	System.out.println(stmt1);
-	
-	 int row = stmt1.executeUpdate();
-	   
-	   
-	   System.out.println(row +"<-게시글 row");
-	   
+
+	 int row = GoodsDAO.deleteGoods(goodsNo);
+	   	   
 	   if(row == 1){ 
 	      response.sendRedirect("/shop/emp/goodsList.jsp");
 	      System.out.println("삭제성공");
