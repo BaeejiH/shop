@@ -16,8 +16,12 @@
 	String empID = request.getParameter("empID");
 	String empPW = request.getParameter("emppw");
 	
+	
 	//  모델 호출하는 코드
-	HashMap<String, Object> loginEmp = EmpDAO.empLogin(empID,empPW);
+	HashMap<String, Object> loginEmp = EmpDAO.empLogin(empID, empPW);
+	System.out.println(loginEmp+"<--loginEmp");
+	
+	
 	
 	
 	//1.controller

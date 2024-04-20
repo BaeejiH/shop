@@ -15,7 +15,7 @@ public class EmpDAO {
 	//empOne.jsp
 	//param : empId, empName, empJob,hiredate,active
 	// goodList에서 이름을 눌렀을때 정보 상세보기
-	public static HashMap<String, Object>empOnelist(String empID) throws Exception{
+	public static HashMap<String, Object> empOnelist(String empID) throws Exception{
 		HashMap<String, Object>Empdetalis = new HashMap<>();
 			
 		String sql1 = "select emp_id empId, emp_name empName, emp_job empJob, hire_date hireDate, active "
