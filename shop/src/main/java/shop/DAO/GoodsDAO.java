@@ -2,17 +2,94 @@ package shop.DAO;
 
 import java.sql.Connection;
 
+import java.util.HashMap;
+
 import java.sql.*;
 import java.util.*;
 
 public class GoodsDAO {
 
+
+	
+	
+	// 메소드 첫줄 구성 :  반환타입(ArrayList) + 메소드(getGoodsList) +param(category,currentpage,rowPerpage)
+	//반환을 하지 않으려면 static 말고 void를 쓰면됨.
+	//public은 누구 접근가능하다는 것.
+	
+	/**
+	 public GoodsDAO() throws ClassNotFoundException, SQLException {
+	        Connection conn = DBHelper.getConnection();
+	    }
+
+	    public ArrayList<HashMap<String, Object>> getGoodsList(String category, int startRow, int rowPerPage) throws SQLException {
+	        ArrayList<HashMap<String, Object>> categoryList = new ArrayList<>();
+	        String sql = (category == null || "null".equals(category)) ?
+	                "select goods_no no, category, goods_title title, filename, left(goods_content,500) content, goods_price price, goods_amount amount FROM goods ORDER BY goods_no DESC limit ?,?" :
+	                "select goods_no no, category, goods_title title, filename, left(goods_content,500) content, goods_price price, goods_amount amount FROM goods WHERE category = ? ORDER BY goods_no DESC limit ?,?";
+	        PreparedStatement stmt = conn.prepareStatement(sql);
+	        if (category != null && !"null".equals(category)) {
+	            stmt.setString(1, category);
+	            stmt.setInt(2, startRow);
+	            stmt.setInt(3, rowPerPage);
+	        } else {
+	            stmt.setInt(1, startRow);
+	            stmt.setInt(2, rowPerPage);
+	        }
+	        ResultSet rs = stmt.executeQuery();
+
+	        while (rs.next()) {
+	            HashMap<String, Object> map = new HashMap<>();
+	            map.put("no", rs.getInt("no"));
+	            map.put("category", rs.getString("category"));
+	            map.put("title", rs.getString("title"));
+	            map.put("content", rs.getString("content"));
+	            map.put("price", rs.getInt("price"));
+	            map.put("amount", rs.getInt("amount"));
+	            map.put("imagePath", rs.getString("filename"));
+	            categoryList.add(map);
+	        }
+	        return categoryList;
+	    }
+
+	    public int getGoodsCount(String category) throws SQLException {
+	        int count = 0;
+	        String sql = "select count(*) cnt From goods" + (category != null && !"null".equals(category) ? " WHERE category = ?" : "");
+	        PreparedStatement stmt = conn.prepareStatement(sql);
+	        if (category != null && !"null".equals(category)) {
+	            stmt.setString(1, category);
+	        }
+	        ResultSet rs = stmt.executeQuery();
+	        if (rs.next()) {
+	            count = rs.getInt("cnt");
+	        }
+	        return count;
+	    }
+
+	    public ArrayList<HashMap<String, Object>> getAllCategories() throws SQLException {
+	        ArrayList<HashMap<String, Object>> categoryList = new ArrayList<>();
+	        String sql = "select category, count(*) cnt from goods group by category order by category asc";
+	        PreparedStatement stmt = conn.prepareStatement(sql);
+	        ResultSet rs = stmt.executeQuery();
+	        while (rs.next()) {
+	            HashMap<String, Object> map = new HashMap<>();
+	            map.put("category", rs.getString("category"));
+	            map.put("cnt", rs.getInt("cnt"));
+	            categoryList.add(map);
+	        }
+	        return categoryList;
+	    }
+	}
+	**/
+	
+	
+	
+	
+	
 	// deletegoodsACtion
 	// 관리자가 상품을 삭제시키능 기능
 	// param : goods_No
 	// goods의 테이블행을 삭제하고 삭제된 행의 수를 반환
 	// 반환 값은 delete문의 실행결과에 해당되는 삭제된 행의 수
-
 	public static int deleteGoods(int goodsNo) throws Exception {
 
 		int row = 0;
