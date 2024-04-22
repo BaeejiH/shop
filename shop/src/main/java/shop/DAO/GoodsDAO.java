@@ -2,30 +2,101 @@ package shop.DAO;
 
 import java.sql.Connection;
 
+
 import java.util.HashMap;
 
 import java.sql.*;
 import java.util.*;
 
+
+
+
 public class GoodsDAO {
+	//goodsList 페이징
+	 public static ArrayList<HashMap<String, Object>> ppgoodsList(String category, int startRow, int rowPerPage) throws Exception {
+		
+		 Class.forName("org.mariadb.jdbc.Driver");
+		PreparedStatement stmt1 = null;
+		ResultSet rs1 = null;
+		Connection conn = DBHelper.getConnection();
+		
+        String sql = "";
+        if (category == null || "null".equals(category)) {
+            sql = "select goods_no no, category, goods_title title, filename, left(goods_content,500) content, goods_price price, goods_amount amount FROM goods ORDER BY goods_no DESC limit ?,?;";
+        } else {
+            sql = "select goods_no no, category, goods_title title, filename, left(goods_content,500) content, goods_price price, goods_amount amount FROM goods WHERE category = ? ORDER BY goods_no DESC limit ?,?;";
+        }
 
+        stmt1 = conn.prepareStatement(sql);
+
+        int iParam = 1;
+        if (!(category == null || "null".equals(category))) {
+            stmt1.setString(iParam++, category);
+        }
+
+        stmt1.setInt(iParam++, startRow);
+        stmt1.setInt(iParam++, rowPerPage);
+
+        rs1 = stmt1.executeQuery();
+
+        ArrayList<HashMap<String, Object>> goodsList = new ArrayList<>();
+        
+        while (rs1.next()) {
+            HashMap<String, Object> m = new HashMap<>();
+            String imagePath = rs1.getString("filename");
+            m.put("no", rs1.getInt("no"));
+            m.put("category", rs1.getString("category"));
+            m.put("title", rs1.getString("title"));
+            m.put("content", rs1.getString("content"));
+            m.put("price", rs1.getInt("price"));
+            m.put("amount", rs1.getInt("amount"));
+            m.put("imagePath", imagePath);
+            goodsList.add(m);
+        }
+	        	        
+	       return goodsList; 
+	 }
 
 	
 	
+	//카테코리 그룹별 출력
+	public static ArrayList<HashMap<String, Object>> getcategoryList()
+				throws Exception{
+		Class.forName("org.mariadb.jdbc.Driver");
+		PreparedStatement stmt1 = null;
+		ResultSet rs1 = null;
+		Connection conn = DBHelper.getConnection();
+		
+		String sql1 = "select category,count(*) cnt from goods group by category order by category asc";
+		stmt1 = conn.prepareStatement(sql1);
+		rs1 = stmt1. executeQuery();
+		
+		ArrayList<HashMap<String, Object>> grouplist = new ArrayList<HashMap<String, Object>>();
+
+		while(rs1.next()){
+			HashMap<String, Object> m0 = new HashMap<String, Object>();
+			m0.put("category", rs1.getString("category"));
+			m0.put("cnt", rs1.getInt("cnt"));
+			grouplist.add(m0);
+			
+	}
+		return grouplist;
+		
+	}
+		
 	// 메소드 첫줄 구성 :  반환타입(ArrayList) + 메소드(getGoodsList) +param(category,currentpage,rowPerpage)
 	//반환을 하지 않으려면 static 말고 void를 쓰면됨.
-	//public은 누구 접근가능하다는 것.
-	
-	/**
-	 public GoodsDAO() throws ClassNotFoundException, SQLException {
+	//public은 누구 접근가능하다는 것.	
+	 public GoodsDAO() throws Exception {
 	        Connection conn = DBHelper.getConnection();
 	    }
 
-	    public ArrayList<HashMap<String, Object>> getGoodsList(String category, int startRow, int rowPerPage) throws SQLException {
+	    public ArrayList<HashMap<String, Object>> getGoodsList(String category, int startRow, int rowPerPage) throws Exception {
 	        ArrayList<HashMap<String, Object>> categoryList = new ArrayList<>();
 	        String sql = (category == null || "null".equals(category)) ?
 	                "select goods_no no, category, goods_title title, filename, left(goods_content,500) content, goods_price price, goods_amount amount FROM goods ORDER BY goods_no DESC limit ?,?" :
 	                "select goods_no no, category, goods_title title, filename, left(goods_content,500) content, goods_price price, goods_amount amount FROM goods WHERE category = ? ORDER BY goods_no DESC limit ?,?";
+	        Connection conn = DBHelper.getConnection();
 	        PreparedStatement stmt = conn.prepareStatement(sql);
 	        if (category != null && !"null".equals(category)) {
 	            stmt.setString(1, category);
@@ -47,13 +118,16 @@ public class GoodsDAO {
 	            map.put("amount", rs.getInt("amount"));
 	            map.put("imagePath", rs.getString("filename"));
 	            categoryList.add(map);
-	        }
-	        return categoryList;
+	        
+	   
 	    }
+			return categoryList;
+}
 
-	    public int getGoodsCount(String category) throws SQLException {
+	    public int getGoodsCount(String category) throws Exception {
 	        int count = 0;
 	        String sql = "select count(*) cnt From goods" + (category != null && !"null".equals(category) ? " WHERE category = ?" : "");
+	        Connection conn = DBHelper.getConnection();
 	        PreparedStatement stmt = conn.prepareStatement(sql);
 	        if (category != null && !"null".equals(category)) {
 	            stmt.setString(1, category);
@@ -65,9 +139,10 @@ public class GoodsDAO {
 	        return count;
 	    }
 
-	    public ArrayList<HashMap<String, Object>> getAllCategories() throws SQLException {
+	    public ArrayList<HashMap<String, Object>> getAllCategories() throws Exception {
 	        ArrayList<HashMap<String, Object>> categoryList = new ArrayList<>();
 	        String sql = "select category, count(*) cnt from goods group by category order by category asc";
+	        Connection conn = DBHelper.getConnection();
 	        PreparedStatement stmt = conn.prepareStatement(sql);
 	        ResultSet rs = stmt.executeQuery();
 	        while (rs.next()) {
@@ -78,13 +153,7 @@ public class GoodsDAO {
 	        }
 	        return categoryList;
 	    }
-	}
-	**/
-	
-	
-	
-	
-	
+
 	// deletegoodsACtion
 	// 관리자가 상품을 삭제시키능 기능
 	// param : goods_No

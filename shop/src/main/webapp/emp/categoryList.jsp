@@ -1,6 +1,7 @@
 <%@  page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="java.util.*"%>
 <%@page import="java.sql.*"%>
+<%@ page import = "shop.DAO.*"%>
 <%
 	// 인증분기	 : 세션변수 이름 - loginEmp
 	if(session.getAttribute("loginEmp") == null) {
@@ -10,33 +11,8 @@
 %>
 
 <%
-	String sql1 = "select category, create_date createDate from category";
-	Class.forName("org.mariadb.jdbc.Driver");
-	
-	Connection con = null;
-	PreparedStatement stmt1 = null;
-	ResultSet rs1 = null;
-	con = DriverManager.getConnection(
-			"jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-	stmt1 = con.prepareStatement(sql1);
-	rs1 = stmt1.executeQuery(); 
-	
-	ArrayList<HashMap<String, Object>> categorylist
-	= new ArrayList<HashMap<String, Object>>();
-
-	// ResultSet -> ArrayList<HashMap<String, Object>>
-	while(rs1.next()) {
-		HashMap<String, Object> m = new HashMap<String, Object>();
-		m.put("category", rs1.getString("category"));
-		m.put("createDate", rs1.getString("createDate"));
-		categorylist.add(m);	}
-
-
+	ArrayList<HashMap<String, Object>> categoryList = CategoryDAO.getCategoryList();
 %>
-
-
-
-
 
 <!DOCTYPE html>
 <html>
@@ -70,8 +46,9 @@
 
 
 
+
 			<%
-				for(HashMap<String, Object> category : categorylist) {
+				for(HashMap<String, Object> category : categoryList ) {
 			%>
 			<tr>
 				<td><%= category.get("category") %></td>

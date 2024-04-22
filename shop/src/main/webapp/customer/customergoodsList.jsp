@@ -3,6 +3,7 @@
 <%@ page import="java.sql.*"%>
 <%@ page import="java.net.*"%>
 <%@ page import = "java.util.*" %>
+<%@ page import = "shop.DAO.customerDAO" %>
 
 <!-- controller layer -->
 <%
@@ -51,105 +52,18 @@
 
 <!--ㅡmodel layer -->
 <% 
-	Class.forName("org.mariadb.jdbc.Driver");
-	PreparedStatement stmt1 = null;
-	ResultSet rs1 = null;
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-	
-	String sql1 = "select category,count(*) cnt from goods group by category order by category asc";
-	stmt1 = conn.prepareStatement(sql1);
-	rs1 = stmt1. executeQuery();
-	
-	ArrayList<HashMap<String, Object>> categoryList0 = new ArrayList<HashMap<String, Object>>();
-	
-	while(rs1.next()){
-		HashMap<String, Object> m0 = new HashMap<String, Object>();
-		m0.put("category", rs1.getString("category"));
-		m0.put("cnt", rs1.getInt("cnt"));
-		categoryList0.add(m0);
-	}
-	
-	//디버깅
-	System.out.println("categoryList : " + category);
-	
-	if ( category == null || "null".equals(category)){
-		System.out.println("AAA" + category);
-	}else{
-		System.out.println("BBB" + category);
-	}
-	String sql2 = "";
-	if ( category == null || "null".equals(category)){
-		System.out.println("AAAbb");
-		sql2= "select goods_no no, category, goods_title title, filename,left(goods_content,500)content, goods_price price, goods_amount amount FROM goods ORDER BY goods_no DESC limit ?,?;";
-	}else {
-		System.out.println("CCCCC");
-		sql2= "select goods_no no, category, goods_title title, filename,left(goods_content,500)content, goods_price price, goods_amount amount FROM goods WHERE category = ? ORDER BY goods_no DESC limit ?,?;";
-	}
-	//String sql2= "select goods_no no, category, goods_title title,left(goods_content,500)content, goods_price price, goods_amount amount FROM goods WHERE category = ? ORDER BY goods_no DESC limit ?,?;";
-	Class.forName("org.mariadb.jdbc.Driver");
-	PreparedStatement stmt2 = null;
-	ResultSet rs2 = null;
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-	stmt2 = conn.prepareStatement(sql2);
-	
-	int iParam = 1;
-	if ( category == null || "null".equals(category)){
-		
-	}else{
-		stmt2.setString(iParam++, category);
-	}
-	System.out.println("startRow : " + startRow + " : " + rowPerPage + " : "+ category);
-	
-	stmt2.setInt(iParam++,startRow);
-	stmt2.setInt(iParam++,rowPerPage);
-	
-	System.out.println("sql2 check : " + sql2.toString());
-	rs2 = stmt2.executeQuery(); 
-	
-	ArrayList<HashMap<String, Object>> categoryList1 = new ArrayList<HashMap<String, Object>>();
-	
-	while(rs2.next()){
-		System.out.println("ccc");
-		System.out.println("ddd"+rs2.getString("filename"));
-		String imagePath = rs2.getString("filename");
-			
-		HashMap<String, Object> m1 = new HashMap<String, Object>();
-		m1.put("no", rs2.getInt("no"));
-		m1.put("category", rs2.getString("category"));
-		m1.put("title", rs2.getString("title"));
-		m1.put("content", rs2.getString("content"));
-		m1.put("price", rs2.getInt("price"));
-		m1.put("amount", rs2.getInt("amount"));
-		m1.put("imagePath", imagePath); 
-		categoryList1.add(m1);
-	}
+
+	ArrayList<HashMap<String, Object>> getcategoryList = customerDAO.getcategoryList();
 	
 	
+	ArrayList<HashMap<String, Object>> customerLsit 
+	= customerDAO.ppcustomerList(category, startRow, rowPerPage);
 	
-	String sql3="SELECT goods_no no, category, goods_title title,filename,left(goods_content,500)content, goods_price price, goods_amount amount,(SELECT COUNT(*) FROM goods) AS cnt FROM goods ORDER BY goods_no DESC limit ?,?;";
-	PreparedStatement stmt3 = null;
-	ResultSet rs3 = null;
-	stmt3 = conn.prepareStatement(sql3);
-	stmt3.setInt(1,startRow);
-	stmt3.setInt(2,rowPerPage);
-	rs3 = stmt3.executeQuery(); 
+
 	
-	ArrayList<HashMap<String, Object>> categoryList2
-	= new ArrayList<HashMap<String, Object>>();
+
 	
-	while(rs3.next()){
-		String imagePath = rs3.getString("filename");
-		HashMap<String, Object> m2 = new HashMap<String, Object>();
-		m2.put("no", rs3.getInt("no"));
-		m2.put("category", rs3.getString("category"));
-		m2.put("title", rs3.getString("title"));
-		m2.put("content", rs3.getString("content"));
-		m2.put("price", rs3.getInt("price"));
-		m2.put("amount", rs3.getInt("amount"));
-		m2.put("imagePath", imagePath); 
-		categoryList2.add(m2);
-	}
-	
+
 	
 		
 
@@ -296,7 +210,7 @@
 		 	<nav class="kkk menu d-flex align-items-center mt-3">
 			<a href="/shop/customer/customergoodsList.jsp"  class="nb ss nav nav-fill w-100 d-flex">전체</a>
 			<%
-				for(HashMap m0 : categoryList0) {
+				for(HashMap m0 : getcategoryList) {
 			%>
 			<b><a href="/shop/customer/customergoodsList.jsp?category=<%=(String)(m0.get("category"))%>" class="na ss nav nav-fill w-100 d-flex">
 						<%=(String)(m0.get("category"))%></b>					
@@ -321,7 +235,7 @@
 <div class="container">
     <div class="row">
         <% 
-            for (HashMap m2 : categoryList2) {
+            for (HashMap m2 : customerLsit) {
         %>
 
         
@@ -361,7 +275,7 @@
 				
 	<%
 					} else { //카테고리의 값이 null이 아닐때
-					for (HashMap m1 : categoryList1) {
+					for (HashMap m1 : customerLsit) {
 					%>
 		<div class="container text-center">
 			<div class="row row-cols-3">
@@ -407,7 +321,7 @@
 			%>
 
 			<li class="page-item"><a class="page-link"
-				href="./goodsList.jsp?currentPage=<%=currentPage - 1%>&category=<%=category%>&totalRow=<%=totalRow%>">previous</a></li>
+				href="./customergoodsList.jsp?currentPage=<%=currentPage - 1%>&category=<%=category%>&totalRow=<%=totalRow%>">previous</a></li>
 			<%
 			} else {
 			%>
@@ -423,7 +337,7 @@
 			%>
 
 			<li class="page-item"><a class="page-link"
-				href="./goodsList.jsp?currentPage=<%=currentPage + 1%>&category=<%=category%>&totalRow=<%=totalRow%>">next</a></li>
+				href="./customergoodsList.jsp?currentPage=<%=currentPage + 1%>&category=<%=category%>&totalRow=<%=totalRow%>">next</a></li>
 
 			<%
 			} else {

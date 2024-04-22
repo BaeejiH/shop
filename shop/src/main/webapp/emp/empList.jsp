@@ -2,6 +2,7 @@
 <%@ page import="java.sql.*"%>
 <%@ page import="java.util.*"%>
 <%@ page import="java.net.*"%>
+<%@ page import = "shop.DAO.*"%>
 
 
 <!-- Controller Layer -->
@@ -61,31 +62,14 @@
 	// 특수한 형태의 데이터(RDBMS:mariadb) 
 	// -> API사용(JDBC API)하여 자료구조(ResultSet) 취득 
 	// -> 일반화된 자료구조(ArrayList<HashMap>)로 변경 -> 모델 취득
-	Class.forName("org.mariadb.jdbc.Driver");
-	PreparedStatement stmt = null;
-	ResultSet rs = null;
-	String sql = "select emp_id empId, emp_name empName, emp_job empJob, hire_date hireDate, active from emp order by hire_date desc limit ?, ?";
-	conn = DriverManager.getConnection(
-			"jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-	stmt = conn.prepareStatement(sql);
-	stmt.setInt(1, startRow);
-	stmt.setInt(2, rowPerPage);
-	rs = stmt.executeQuery(); 
 	// JDBC API 종속된 자료구조 모델 ResultSet  -> 기본 API 자료구조(ArrayList)로 변경
+	// ResultSet -> ArrayList<HashMap<String, Object>>
 	
 	ArrayList<HashMap<String, Object>> list
-		= new ArrayList<HashMap<String, Object>>();
+		= EmpDAO.empList(startRow, rowPerPage);
 	
-	// ResultSet -> ArrayList<HashMap<String, Object>>
-	while(rs.next()) {
-		HashMap<String, Object> m = new HashMap<String, Object>();
-		m.put("empId", rs.getString("empId"));
-		m.put("empName", rs.getString("empName"));
-		m.put("empJob", rs.getString("empJob"));
-		m.put("hireDate", rs.getString("hireDate"));
-		m.put("active", rs.getString("active"));
-		list.add(m);	}
-	// JDBC API 사용이 끝났다면 DB자원들을 반납
+
+	
 %>
 
 <!-- View Layer : 모델(ArrayList<HashMap<String, Object>>) 출력 -->

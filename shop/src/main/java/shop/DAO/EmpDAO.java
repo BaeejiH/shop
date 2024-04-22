@@ -2,14 +2,46 @@ package shop.DAO;
 
 
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.*;
 
-import java.sql.*;
-
-import java.sql.*;
-
 public class EmpDAO {
+	
+	//empist
+	//타입 : ArrayLsit
+	//param :
+	public static ArrayList<HashMap<String, Object>> empList(int startRow,int rowPerPage) throws Exception {
+		Class.forName("org.mariadb.jdbc.Driver");
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = "select emp_id empId, emp_name empName, emp_job empJob, hire_date hireDate, active from emp order by hire_date desc limit ?, ?";
+		Connection conn = DBHelper.getConnection();
+		stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, startRow);
+		stmt.setInt(2, rowPerPage);
+		rs = stmt.executeQuery(); 
+		// JDBC API 종속된 자료구조 모델 ResultSet  -> 기본 API 자료구조(ArrayList)로 변경
+		
+		ArrayList<HashMap<String, Object>> list
+			= new ArrayList<HashMap<String, Object>>();
+		
+		// ResultSet -> ArrayList<HashMap<String, Object>>
+		while(rs.next()) {
+			HashMap<String, Object> m = new HashMap<String, Object>();
+			m.put("empId", rs.getString("empId"));
+			m.put("empName", rs.getString("empName"));
+			m.put("empJob", rs.getString("empJob"));
+			m.put("hireDate", rs.getString("hireDate"));
+			m.put("active", rs.getString("active"));
+			list.add(m);	}
+		// JDBC API 사용이 끝났다면 DB자원들을 반납
+		
+		return list;
+	}
+	
+	
+	
 	
 	
 	//empOne.jsp
