@@ -247,14 +247,14 @@
                 <div class="card-body">
                     <h5 class="card-title">제목: <%=(String) (m2.get("title"))%></h5>
                     <p class="card-text">
-                        번호: <%=(Integer) (m2.get("no"))%><br> 
+                        번호: <a href="./goodsOne.jsp?no=<%= m2.get("no") %>"><%=(Integer) (m2.get("no"))%></a><br> 
                         카테고리: <%=(String) (m2.get("category"))%><br>
                         가격: <%=(Integer) (m2.get("price"))%>                   
 						<a href="./deletegoodsAction.jsp?no=<%=m2.get("no")%>">상품삭제</a>
 			
                     </p>
                 </div>
-            </div>
+            </div>	
         </div>
 
         <% 

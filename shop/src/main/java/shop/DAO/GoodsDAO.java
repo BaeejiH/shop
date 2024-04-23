@@ -249,16 +249,35 @@ public class GoodsDAO {
 	}
 
 	// 상품 상세보기
-	// /customer/goodsOne.jsp
-	// param : int(goods_no)
-	// return : Goods -> HashMap
-	public static HashMap<String, Object> selectGoodsOne(int goodsNo) throws Exception {
-		HashMap<String, Object> map = null;
+		// /customer/goodsOne.jsp
+		// param : int(goods_no)
+		// return : Goods -> HashMap
+		public static HashMap<String, Object> selectGoodsOne(int goods_no) throws Exception {
+			
+			
+			Connection conn = DBHelper.getConnection();
+			String sql = "select *" + " from goods" + " where goods_no = ?";
+			PreparedStatement stmt1 = conn.prepareStatement(sql);
+			stmt1.setInt(1,goods_no);
+			ResultSet rs1 = stmt1.executeQuery();
+			
+			HashMap<String, Object> m = new HashMap<String, Object>();
+			if(rs1.next()) {
+				
+				m.put("goodsNo", rs1.getString("goods_no"));
+				m.put("category", rs1.getString("category"));
+				m.put("title", rs1.getString("goods_title"));
+				m.put("content", rs1.getString("goods_content"));
+				m.put("price", rs1.getInt("goods_price"));
+				m.put("amount", rs1.getInt("goods_amount"));
+				m.put("imagePath", rs1.getString("filename"));
+				
+				
+			}
+			
+			return m;
+		}
 
-		String sql = "select *" + " from goods" + " where gooods_no = ?";
-
-		return map;
-	}
 
 	// 고객 로그인 후 상품목록 페이지
 	// /customer/goodsList.jsp
