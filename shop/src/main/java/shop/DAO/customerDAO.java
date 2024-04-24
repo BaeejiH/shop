@@ -19,9 +19,9 @@ public class customerDAO {
 			
 	        String sql = "";
 	        if (category == null || "null".equals(category)) {
-	            sql = "select goods_no no, category, goods_title title, filename,left(goods_content,500)content, goods_price price, goods_amount amount FROM goods ORDER BY goods_no DESC limit ?,?;";
+	            sql = "select goods_no goodsNo, category, goods_title title, filename,left(goods_content,500)content, goods_price price, goods_amount amount FROM goods ORDER BY goods_no DESC limit ?,?;";
 	        } else {
-	            sql = "select goods_no no, category, goods_title title, filename,left(goods_content,500)content, goods_price price, goods_amount amount FROM goods WHERE category = ? ORDER BY goods_no DESC limit ?,?;"; 
+	            sql = "select goods_no goodsNo, category, goods_title title, filename,left(goods_content,500)content, goods_price price, goods_amount amount FROM goods WHERE category = ? ORDER BY goods_no DESC limit ?,?;"; 
 	        }
 
 	        stmt1 = conn.prepareStatement(sql);
@@ -41,7 +41,7 @@ public class customerDAO {
 	        while (rs1.next()) {
 	            HashMap<String, Object> m = new HashMap<>();
 	            String imagePath = rs1.getString("filename");
-	            m.put("no", rs1.getInt("no"));
+	            m.put("goodsNo", rs1.getInt("goodsNo"));
 	            m.put("category", rs1.getString("category"));
 	            m.put("title", rs1.getString("title"));
 	            m.put("content", rs1.getString("content"));

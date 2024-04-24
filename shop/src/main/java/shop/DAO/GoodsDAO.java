@@ -12,6 +12,73 @@ import java.util.*;
 
 
 public class GoodsDAO {
+		//상품 수량 업데이트
+		//addorderAction.jsp
+		//param : goodsNo, amount
+		//상품의 수량을 주문 수량만큼 감소시키고 수량이 음수가 되지 않기위한 메소드
+		public static int updateGoodsamount(int goodsNo, int amount) throws Exception{
+			//현재 수량에서 주문한 수량을 뺀 새로운 값으로 지정.
+			//상품의 수량이 음수가 되지 않기 위해서 amount가 주어진 값보다 같거나 커야된다는 조건.--> and goods_amount >= ?
+			//and goods_amount > ?, 이렇게 쿼리 설정시 ?에 들어가는 amount에 -1씩 해줘야함.
+			String sql = "UPDATE goods SET goods_amount = goods_amount - ?, update_date = NOW() WHERE goods_no = ? AND goods_amount >= ?";
+			Connection conn = DBHelper.getConnection();
+			PreparedStatement stmt = null;
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, amount);
+			stmt.setInt(2, goodsNo);
+			stmt.setInt(3, amount);
+			System.out.println(stmt);
+			int row = 0;
+			return row = stmt.executeUpdate();
+		}
+	
+	// 상품 상세보기
+			// 소비자 페이지에서 상품 상세보기
+			// /customer/goodsOne.jsp
+			// param : int(goods_no)
+			// return : csutomerGoods -> HashMap
+			public static HashMap<String, Object> selectcustomerGoodsOne(int goods_no) throws Exception {
+				
+				
+				Connection conn = DBHelper.getConnection();
+				String sql = "select *" + " from goods" + " where goods_no = ?";
+				PreparedStatement stmt1 = conn.prepareStatement(sql);
+				stmt1.setInt(1,goods_no);
+				ResultSet rs1 = stmt1.executeQuery();
+				
+				HashMap<String, Object> m = new HashMap<String, Object>();
+				if(rs1.next()) {
+					
+					m.put("goodsNo", rs1.getString("goods_no"));
+					m.put("category", rs1.getString("category"));
+					m.put("title", rs1.getString("goods_title"));
+					m.put("content", rs1.getString("goods_content"));
+					m.put("price", rs1.getInt("goods_price"));
+					m.put("amount", rs1.getInt("goods_amount"));
+					m.put("imagePath", rs1.getString("filename"));
+					
+					
+				}
+				
+				return m;
+			}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//goodsList 페이징
 	 public static ArrayList<HashMap<String, Object>> ppgoodsList(String category, int startRow, int rowPerPage) throws Exception {
 		
@@ -249,7 +316,8 @@ public class GoodsDAO {
 	}
 
 	// 상품 상세보기
-		// /customer/goodsOne.jsp
+		// 직원 페이지에서 상품 상세보기
+		// /emp/goodsOne.jsp
 		// param : int(goods_no)
 		// return : Goods -> HashMap
 		public static HashMap<String, Object> selectGoodsOne(int goods_no) throws Exception {
