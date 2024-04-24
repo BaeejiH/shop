@@ -1,13 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%
-	// 인증분기	 : 세션변수 이름 - loginEmp
-	if(session.getAttribute("logincustomer") == null) {
-		response.sendRedirect("/shop/customer/customerloginForm.jsp");
-		return;
-	}
-%>   
+
     
 <!DOCTYPE html>
 <html>
@@ -24,7 +18,7 @@
 
 		
 		<div>상품리뷰:<input type="hidden" name=review value=""id=rr></div>
-		<div><textarea rows="" cols=""id=rr></textarea></div>
+		<div><textarea rows="15" cols="50"id=rr></textarea></div>
 		
 		<button type="submit">리뷰작성</button>
 	</form>

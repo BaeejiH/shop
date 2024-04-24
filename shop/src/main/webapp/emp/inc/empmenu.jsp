@@ -38,7 +38,9 @@
 	
 	<a href="/shop/emp/goodsList.jsp"style="color:gray">상품관리</a>|
 	
-	<a href="./addgoodsForm.jsp"style="color:gray">상품등록</a>
+	<a href="./addgoodsForm.jsp"style="color:gray">상품등록</a>|
+	
+	<a href="./orderList.jsp"style="color:gray">전체주문내역확인</a>
 	
 </div>	
 	<br>  

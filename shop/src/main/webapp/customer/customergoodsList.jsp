@@ -59,14 +59,6 @@
 	ArrayList<HashMap<String, Object>> customerLsit 
 	= customerDAO.ppcustomerList(category, startRow, rowPerPage);
 	
-
-	
-
-	
-
-	
-		
-
 %>
 	
 	<!DOCTYPE html>
