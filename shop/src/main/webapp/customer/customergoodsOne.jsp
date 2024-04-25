@@ -3,7 +3,7 @@
 <%@ page import="java.sql.*"%>
 <%@ page import="java.net.*"%>
 <%@ page import = "java.util.*" %>       
-<%@ page import = "shop.DAO.GoodsDAO" %>
+<%@ page import = "shop.DAO.*" %>
 
 
 <%
@@ -22,6 +22,8 @@
 	System.out.print(goodsNo+"<---goodsNo");
 
 	HashMap<String, Object> selectcustomerGoodsOne = GoodsDAO.selectcustomerGoodsOne(goodsNo);
+	
+	 ArrayList<HashMap<String, Object>> reviewList = ReviewDAO.getReviewgoods(goodsNo);
 	
 %>
 
@@ -83,19 +85,47 @@
 	<div><a href="addorder.jsp?goodsNo=<%= selectcustomerGoodsOne.get("goodsNo") %>">주문하기</a></div>
 	
 	<br>	<br>
-     ★후기
-   	<div><textarea></textarea></div>
-  
-	
-	
-	
+    
+    
+    <div>
+		<div>상품후기</div>
+		<%
+			for(HashMap review : reviewList){
+		%>
+				<div>
+					<div>
+						<%
+							for(int i=0; i<(Integer)(review.get("score")); i=i+1) {
+						%>
+								&#127775;
+						<%
+							}
+						%>
+						
+						
+						
+					</div>
+					<div><%=review.get("content") %></div>
+				</div>
+		<%
+			}
+		%>
+	</div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
     </div>
     <div class="col">
     
     </div>
   </div>
 </div>
-	
 	
 	
 	

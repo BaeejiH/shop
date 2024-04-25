@@ -9,7 +9,10 @@
 	}
 %>
  
-    
+ <%
+ 	int ordersNo = Integer.parseInt(request.getParameter("orders_no"));
+ 	System.out.println(ordersNo+"<---orders_no");
+ %>   
 
     
 <!DOCTYPE html>
@@ -23,23 +26,25 @@
 
 
 	<h1>리뷰작성</h1>
-	<form action="./addreviewAction.jsp" method="post">
+	<form action="addreviewAction.jsp" method="post">
+	    <input type="hidden" name="ordersNo" value="<%= ordersNo %>">
+	    
+	    <div>
+        별점
+        <select name="score" id="score">
+            <option value="1">★</option>
+            <option value="2">★★</option>
+            <option value="3">★★★</option>
+            <option value="4">★★★★</option>
+            <option value="5">★★★★★</option>
+        </select>
+    </div>
 
-		
-		<div>상품리뷰:<input type="hidden" name=review value=""id=rr></div>
-		<div><textarea rows="15" cols="50"id=rr></textarea></div>
-		
 		<div>
-			<select>
-				<option>★</option>
-				<option>★★</option>
-				<option>★★★</option>
-				<option>★★★★</option>
-				<option>★★★★</option>
-			</select>
+			<textarea name="content"></textarea>
 		</div>
-		
-		<button type="submit">리뷰작성</button>
+
+		<button type="submit">리뷰 작성</button>
 	</form>
 	
 	
