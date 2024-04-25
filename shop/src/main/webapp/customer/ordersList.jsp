@@ -42,16 +42,34 @@
             <th>상품명</th>
             <th>주문날짜</th>
             <th>주문상태</th>
+            <th></th>
         </tr>
-        <% for (HashMap<String, Object> order : ordersList) { %>
+        <% 
+        	for (HashMap<String, Object> order : ordersList) { 
+        %>
             <tr>
                 <td><%= order.get("orders_no") %></td>
                 <td><%= order.get("goods_no") %></td>
                 <td><%= order.get("goods_title") %></td>
                 <td><%= order.get("create_date") %></td>
                 <td><%= order.get("state") %></td>
+                <td>
+                	<% 
+                        // 주문 상태가 "배송완료"인 경우에만 리뷰 작성 페이지로의 링크를 추가
+                        if ("배송완료".equals(order.get("state"))) { 
+                    %>
+                        <a href="/shop/customer/addreviewForm.jsp?orders_no=<%= order.get("orders_no") %>">리뷰 작성</a>
+                    <% 
+                   		 } 
+                    %>              
+                </td>
+                              
             </tr>
-        <% } %>
+            
+                 
+        <% 
+        	}
+        %>
     </table>
 </body>
 </html>

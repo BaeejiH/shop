@@ -79,10 +79,15 @@
 		<td><%= selectcustomerGoodsOne.get("amount") %></td>
 	</tr>
 	
-		
-	
 </table>
 	<div><a href="addorder.jsp?goodsNo=<%= selectcustomerGoodsOne.get("goodsNo") %>">주문하기</a></div>
+	
+	<br>	<br>
+     ★후기
+   	<div><textarea></textarea></div>
+  
+	
+	
 	
     </div>
     <div class="col">

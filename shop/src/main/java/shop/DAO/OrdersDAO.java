@@ -8,6 +8,34 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class OrdersDAO {
+	
+	// updatestate.jsp
+	// 타입: int
+	// param: ordersNo
+	// 주문상태를 변경(결제완료 --> 배송완료)
+	public static int updatestate(int ordersNo) throws Exception {
+		 	int row = 0;
+			Connection conn = null;
+	        PreparedStatement stmt1 = null;
+	       
+	        
+	        conn = DBHelper.getConnection();
+	                       
+	        String sql = "UPDATE orders SET state = '배송완료' WHERE orders_no = ?";
+	        
+	        stmt1 = conn.prepareStatement(sql);
+	        stmt1.setInt(1,ordersNo);
+	        
+	        row = stmt1.executeUpdate();
+	        
+	        conn.close();
+			return row;           
+	}
+	
+	
+	
+	
+	
 	// 고객의 자신의 주문을 확인(페이징)
 	// WHERE o.mail = ? , 이메일에 세션에 저장된 이메일로 고객 이메일 불러오기
 	// 타입 : ArrayList
@@ -126,7 +154,7 @@ public class OrdersDAO {
 
 	        conn = DBHelper.getConnection();
 	        //orders테이블과 goods테이블을 조인하여 주문번호, 상품번호, 상품 제목 선택.
-	        String sql = "SELECT o.orders_no AS ordersNo, o.goods_no AS goodsNo, g.goods_title AS goodsTitle " +
+	        String sql = "SELECT o.orders_no AS ordersNo, o.goods_no AS goodsNo, g.goods_title AS goodsTitle, o.state " +
 	                     "FROM orders o " +
 	                     "INNER JOIN goods g ON o.goods_no = g.goods_no " +
 	                     "ORDER BY o.orders_no DESC " +
@@ -146,6 +174,7 @@ public class OrdersDAO {
 	            order.put("ordersNo", rs.getInt("ordersNo"));
 	            order.put("goodsNo", rs.getInt("goodsNo"));
 	            order.put("goodsTitle", rs.getString("goodsTitle"));
+	            order.put("state", rs.getString("state"));
 	            ordersList.add(order);
 	        }
 	        

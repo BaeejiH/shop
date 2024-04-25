@@ -41,6 +41,7 @@
                 <th>주문 번호</th>
                 <th>상품 번호</th>
                 <th>상품 제목</th>
+                <th>주문상태</th>
             </tr>
         </thead>
         <tbody>
@@ -52,6 +53,7 @@
                 <td><%= order.get("ordersNo") %></td>
                 <td><%= order.get("goodsNo") %></td>
                 <td><%= order.get("goodsTitle") %></td>
+                <td><%= order.get("state") %><a href="./updatestate.jsp?ordersNo=<%= order.get("ordersNo") %>"><button>배송처리</button></a></td>
             </tr>
             
             <%
