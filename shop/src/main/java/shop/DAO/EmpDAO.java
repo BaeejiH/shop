@@ -24,7 +24,7 @@ public class EmpDAO {
 		// JDBC API 종속된 자료구조 모델 ResultSet  -> 기본 API 자료구조(ArrayList)로 변경
 		
 		ArrayList<HashMap<String, Object>> list
-			= new ArrayList<HashMap<String, Object>>();
+			= new ArrayList<HashMap<String, Object>>();	
 		
 		// ResultSet -> ArrayList<HashMap<String, Object>>
 		while(rs.next()) {
@@ -83,16 +83,16 @@ public class EmpDAO {
 	//회원가입시 id 중복확인 기능
 	//param: checkid, IDcheck,emp_id
 	
-	public static String checkID(String emp_id) 
+	public static String checkID(String empid) 
 				throws Exception{
 		Class.forName("org.mariadb.jdbc.Driver"); 
         Connection conn = DBHelper.getConnection();
         String IDcheck = ""; //아이디가 사용가능한지 여부를 보여주는 변수 설정.
         
-        String sql1 = "select emp_id,emp_pw,emp_name,hire_date,active from emp where emp_id = ?"; 
+        String sql1 = "select emp_id,emp_name,hire_date,active from emp where emp_id = ?"; 
         PreparedStatement stmt1 = null;		
     	stmt1 = conn.prepareStatement(sql1);
-    	stmt1.setString(1, emp_id);
+    	stmt1.setString(1, empid);
     	
     	ResultSet rs1 = stmt1.executeQuery();	
     	
@@ -150,36 +150,60 @@ public class EmpDAO {
 		
 		
 		//회원가입
-		String sql ="INSERT into emp (emp_id, emp_pw, emp_name,emp_job, hire_date,active) VALUES (?, PASSWORD(?),?,?,?,?)";
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setString(1,empID);
-		stmt.setString(2,empPW);
-		stmt.setString(3,empName);
-		stmt.setString(4,empJob);
-		stmt.setString(5,hireDate);
-		stmt.setString(6,active);
+		String sql1 ="INSERT into emp (emp_id, emp_name,emp_job, hire_date,active) VALUES (?,?,?,?,?)";
+		PreparedStatement stmt1 = conn.prepareStatement(sql1);
+		stmt1.setString(1,empID);
+		stmt1.setString(2,empName);
+		stmt1.setString(3,empJob);
+		stmt1.setString(4,hireDate);
+		stmt1.setString(5,active);
 		
-		System.out.println(stmt+"<------stmt");
-			
-		row = stmt.executeUpdate();
-			
-		conn.close();
-		return row;
+		System.out.println(stmt1+"<------stmt");
+		
+		 // pwhistory에 비밀번호 기록 삽입
+		//반정규화로 인해 emp테이블에 pw가 없기 때문에  따로 insert 해줘야함.
+	    String Sql2 = "INSERT INTO pwhistory (emp_id, emp_pw, create_date) VALUES (?, ?, NOW())";
+	    PreparedStatement stmt2 = conn.prepareStatement(Sql2);
+	    stmt2.setString(1, empID);
+	    stmt2.setString(2, empPW);
+	    
+	    System.out.println(stmt2+"<------stmt2");
+
+	    row = stmt1.executeUpdate(); // emp 테이블에 삽입
+	    row = stmt2.executeUpdate(); // pwhistory 테이블에 삽입
+
+	    conn.close(); // 연결 닫기
+	    
+	    return row;
 	}
 	
 	
-	//HashMap<String, Object> : null이면 로그인실패, 아니면 성공
-	//String empID,String empPW : 로그인폼에서 사용자가 입력한 id/pw
-	
-	//호출 코드 public static HashMap<String, Object> m = EmpDAO.emplogin("admin", "1234")
+	//emploginAction.jsp
+	//비빌번호 변경시 가장 최근에 변경된 비밀번호만 로그인 가능.
+	//반정규화를 통해서 중복속성 걸러내기	
+	// 타입: HashMap
+	// param : empID, empPW
 	public static HashMap<String, Object>empLogin(String empID,String empPW)
 						throws Exception{
 		HashMap<String, Object>resultMap = null;
-		
+
 		Class.forName("org.mariadb.jdbc.Driver");
 		Connection conn = DBHelper.getConnection();
 		
-		String sql1 = "select emp_id empID,emp_name empName,grade from emp where active='ON' and emp_id =? and emp_pw = password(?)";
+		String sql1 = "SELECT t.emp_id AS empid, t.emp_name AS empName, t.grade AS grade, t.emp_pw AS pw\r\n"
+				+ "FROM (\r\n"
+				+ "    SELECT e.emp_id, e.emp_name, e.grade, ph.emp_pw, ph.create_date\r\n"
+				+ "    FROM emp e\r\n"
+				+ "    INNER JOIN pwhistory ph ON e.emp_id = ph.emp_id\r\n"
+				+ "    WHERE e.emp_id = ?\r\n"
+				+ "    ORDER BY ph.create_date DESC\r\n"
+				+ "    LIMIT 1\r\n"
+				+ ") AS t\r\n"
+				+ "WHERE t.emp_pw = ?";
+		System.out.println("SQL: " + sql1);
+				
+		
+		
 		PreparedStatement stmt1 = null;
 		ResultSet rs1 = null;
 		
@@ -187,7 +211,6 @@ public class EmpDAO {
 		stmt1.setString(1, empID);
 		stmt1.setString(2, empPW);
 		
-		System.out.println(stmt1+"<--stmt");
 		
 		
 		rs1 = stmt1.executeQuery();
@@ -195,9 +218,9 @@ public class EmpDAO {
 		
 		if(rs1.next()) {
 			resultMap = new HashMap<String, Object>();
-			resultMap.put("empID", rs1.getString("empID"));
-			resultMap.put("empName", rs1.getString("empName"));
-			resultMap.put("grade", rs1.getInt("grade"));
+			resultMap.put("empid", rs1.getString("empid"));
+			resultMap.put("emp_name", rs1.getString("empName"));	
+			resultMap.put("grade", rs1.getInt("grade"));	
 		}
 		
 			

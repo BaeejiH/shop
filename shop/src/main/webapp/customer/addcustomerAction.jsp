@@ -21,7 +21,7 @@
 	
 	
 	int row = 0;
-	row = customerDAO.insertcustomer(customerID, customerPW,name,birth,gender);
+	row = customerDAO.insertcustomer(customerID, customerPW, name, birth, gender);
 	
 	if(row == 1){
 		//회원가입 성공

@@ -96,16 +96,17 @@ public class customerDAO {
 	
 	
 	
-	public static String checkIDcustomer(String mail) 
+	public static String checkIDcustomer(String customerID) 
 			throws Exception{
 	Class.forName("org.mariadb.jdbc.Driver"); 
     Connection conn = DBHelper.getConnection();
     String IDcheck = ""; //아이디가 사용가능한지 여부를 보여주는 변수 설정.
     
-    String sql1 = "select mail customerID,pw customerPW,name,birth,gender from customer where mail = ?"; 
+    //customer에서 pw컬럼이 삭제되었기 때문에 쿼리에서 제외.
+    String sql1 = "select mail customerID,name,birth,gender from customer where mail = ?"; 
     PreparedStatement stmt1 = null;		
 	stmt1 = conn.prepareStatement(sql1);
-	stmt1.setString(1, mail);
+	stmt1.setString(1, customerID);
 	
 	ResultSet rs1 = stmt1.executeQuery();	
 	
@@ -129,19 +130,38 @@ public class customerDAO {
 	
 	//customerloginAction
 	//타입 : HashMap
-	//param : logincustomer
+	//param : customerID,customerPW
+	//customer 테이블과 cpwhistory 테이블과 조인쿼리
+	//mail이 같은 값을 두 테이블에서 공통으로 가져온 후 were절과 order by로 정렬.
+	//가장 최신으로 변경한 비밀번호 항목을 가져옴 --> createDate로 인해서.
 	
 	public static HashMap<String, Object>customerLogin(String customerID,String customerPW)
 				throws Exception{
 		HashMap<String, Object>resultMap = null;
 
-		String sql1 = "select mail customerID,pw customerPW,name,birth,gender from customer where mail = ? and pw = password(?) "; 
+		String sql1 = "SELECT b.customerID,b.name, b.birth,b.gender,b.customerPW\r\n"
+				+ "FROM(\r\n"
+				+ "	SELECT c.mail AS customerID,c.name,c.birth,c.gender,cph.pw customerPW,cph.create_date AS createDate\r\n"
+				+ "	FROM customer c\r\n"
+				+ "	INNER JOIN cpwhistory cph \r\n"
+				+ "	ON c.mail = cph.mail\r\n"
+				+ "	WHERE c.mail = ?\r\n"
+				+ "	ORDER BY cph.create_date desc\r\n"
+				+ "	LIMIT 1\r\n"
+				+ ")AS b\r\n"
+				+ "WHERE b.customerPW = ?";
+		
+		System.out.println(sql1+"SQL1");	
+		
 		Class.forName("org.mariadb.jdbc.Driver");
 		Connection conn = DBHelper.getConnection();
 		PreparedStatement stmt1 = null;		
 		stmt1 = conn.prepareStatement(sql1);
 		stmt1.setString(1, customerID);
 		stmt1.setString(2, customerPW);
+		
+		System.out.println(stmt1+"<--stmt1");
+		
 		ResultSet rs1 = null;
 		rs1 = stmt1.executeQuery();
 		
@@ -163,21 +183,38 @@ public class customerDAO {
 	
 	//회원가입 
 	//타입 : int
-	//param: customerID,  customerPW, name,  birth, gender)
+	//param: customerID,  customerPW, name,  birth, gender
+	// 반정규화로 나누어진 테이블을 같이 insert 해준다.( customer + cpwhistory)
 	public static int insertcustomer(String customerID, String customerPW, String name, String birth, String gender) 
 					throws Exception{
-		
+		int row = 0;
 		Connection conn = DBHelper.getConnection();
-        PreparedStatement stmt = conn.prepareStatement("INSERT INTO customer (mail, pw, name, birth, gender) VALUES (?, PASSWORD(?), ?, ?, ?)");
-        stmt.setString(1, customerID);
-        stmt.setString(2, customerPW);
-        stmt.setString(3, name);
-        stmt.setString(4, birth);
-        stmt.setString(5, gender);
+       
         
-        int row = stmt.executeUpdate();
+		String sql1 = "INSERT INTO customer (mail, name, birth, gender) VALUES (?, ?, ?, ?)";
+		PreparedStatement stmt1 = conn.prepareStatement(sql1);
+        System.out.println(sql1+"<-----SQL1");
         
-        stmt.close();
+        stmt1.setString(1, customerID);
+        stmt1.setString(2, name);
+        stmt1.setString(3, birth);
+        stmt1.setString(4, gender);
+        System.out.println(stmt1+"<------stmt1");
+        
+        
+        
+        String sql2 = "INSERT INTO cpwhistory (mail, pw, create_date) VALUES (?, ?, NOW())";
+	    PreparedStatement stmt2 = conn.prepareStatement(sql2);
+	    System.out.println(sql2+"<------SQL2");
+	    stmt2.setString(1, customerID);
+	    stmt2.setString(2, customerPW);
+	    System.out.println(stmt2+"<------stmt2");
+        
+         
+        
+        row = stmt1.executeUpdate();
+        row = stmt2.executeUpdate();
+            
         conn.close();
         
         return row;

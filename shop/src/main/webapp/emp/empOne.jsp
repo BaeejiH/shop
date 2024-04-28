@@ -14,21 +14,21 @@
 %>
 
 <%
-	String empId = request.getParameter("empId");
-	System.out.println(empId+"<-----empid");
+	String empid = request.getParameter("empid");
+	System.out.println(empid+"<-----empid");
 	
 	
 	Connection conn = null;
 	PreparedStatement stmt1 = null;
 	ResultSet rs1 = null;
 	
-	String sql1 = "select emp_id empId, emp_name empName, emp_job empJob, hire_date hireDate, active from emp where emp_id = ?";
+	String sql1 = "select emp_id empid, emp_name empName, emp_job empJob, hire_date hireDate, active from emp where emp_id = ?";
 	Class.forName("org.mariadb.jdbc.Driver");
 	conn = DriverManager.getConnection(
 			"jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
 	
 	stmt1 = conn.prepareStatement(sql1);
-	stmt1.setString(1,empId);
+	stmt1.setString(1,empid);
 			
 	rs1 = stmt1.executeQuery(); 
 	
@@ -38,7 +38,7 @@
 
 while(rs1.next()) {
 	HashMap<String, Object> m = new HashMap<String, Object>();
-	m.put("empId", rs1.getString("empId"));
+	m.put("empid", rs1.getString("empid"));
 	m.put("empName", rs1.getString("empName"));
 	m.put("empJob", rs1.getString("empJob"));
 	m.put("hireDate", rs1.getString("hireDate"));
@@ -85,7 +85,7 @@ while(rs1.next()) {
 	</tr>
 
 	<tr>
-		<td>emp_name:</td>
+		<td>emp_name:</td>	
 		<td><%= empOnelist.get(0).get("empName") %></td>
 	</tr>
 

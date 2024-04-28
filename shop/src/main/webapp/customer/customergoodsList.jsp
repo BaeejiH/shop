@@ -26,7 +26,7 @@
 	int rowPerPage = 20;
 	int startRow = (currentPage-1)*rowPerPage;
 	
-	Class.forName("org.mariadb.jdbc.Driver");
+	Class.forName("org.mariadb.jdbc.Driver");	
 	PreparedStatement goodsstmt = null;
 	Connection conn = null;
 	conn = DriverManager.getConnection(
@@ -56,7 +56,7 @@
 	ArrayList<HashMap<String, Object>> getcategoryList = customerDAO.getcategoryList();
 	
 	
-	ArrayList<HashMap<String, Object>> customerLsit 
+	ArrayList<HashMap<String, Object>> customerList 
 	= customerDAO.ppcustomerList(category, startRow, rowPerPage);
 	
 %>
@@ -227,7 +227,7 @@
 <div class="container">
     <div class="row">
         <% 
-            for (HashMap m2 : customerLsit) {
+            for (HashMap m2 : customerList) {
         %>
 
         
@@ -267,7 +267,9 @@
 				
 	<%
 					} else { //카테고리의 값이 null이 아닐때
-					for (HashMap m1 : customerLsit) {
+						
+					for (HashMap m1 : customerList) {
+						
 					%>
 		<div class="container text-center">
 			<div class="row row-cols-3">
@@ -297,6 +299,9 @@
 				</div>
 		</div>
 	
+	
+	
+
 		<%
 			}
 		}
@@ -306,7 +311,7 @@
 			
 		<div>
 		<ul class="pagination justify-content-center">
-
+			
 
 			<%
 			if (currentPage > 1) {
@@ -318,7 +323,7 @@
 			} else {
 			%>
 			<li class="page-item"><a class="page-link">previous</a></li>
-
+				
 			<%
 			}
 			%>
@@ -339,7 +344,7 @@
 			<%
 			}
 			%>
-
+			
 
 		</ul>
 		</div>

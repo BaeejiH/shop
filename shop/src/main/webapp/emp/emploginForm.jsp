@@ -1,4 +1,4 @@
-<%@  page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+	<%@  page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	//인증분기 :세션변수 이름 -loginEmp
 	if(session.getAttribute("loginEmp") != null) {
@@ -49,14 +49,14 @@
                   <tr>
                      <th>Id:</th>
                      <td><input type="text" name="empID" class=form-control
-                        value="admin" placeholder="아이디"></td>   <br>
+                        value="" placeholder="아이디"></td>   <br>
                   </tr> <br>
       
                   <tr>
                   <br>
                      <th>Pw:</th>
                      <td><input type="password" name="emppw"
-                        class=form-control value="1234" placeholder="비밀번호"></td>
+                        class=form-control value="" placeholder="비밀번호"></td>
                   </tr>
                </table>
                <br>

@@ -86,9 +86,9 @@
 	
 	<br>	<br>
     
-    
-    <div>
-		<div>상품후기</div>
+    <div>★상품후기★</div>
+    <div  style="border: 3px solid;">
+		
 		<%
 			for(HashMap review : reviewList){
 		%>
@@ -102,10 +102,10 @@
 							}
 						%>
 						
-						
+						<%=review.get("content") %>
 						
 					</div>
-					<div><%=review.get("content") %></div>
+					
 				</div>
 		<%
 			}

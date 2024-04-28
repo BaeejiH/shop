@@ -11,8 +11,8 @@
 		return; //로그인이 된 상태이기 때문에 null이 아닐시에 List로 이동
 	}
 %>
-
-
+	
+		
 <%
 	String customerID = request.getParameter("customerID"); //id 값을 요청해야하는데 customer 테이블에는 id라는 컬럼이 없음. mail로 대체? --> mail을 form에서 넘겨주는 customerID로 일치.
 	String customerPW = request.getParameter("customerPW");

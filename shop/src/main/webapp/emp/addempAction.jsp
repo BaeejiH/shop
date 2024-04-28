@@ -26,7 +26,7 @@
 	System.out.println(hireDate+"<---date");
 	System.out.println(active+"<---active");
 
-	int row = EmpDAO.insertEmp(empID,empPW,empName,empJob,hireDate,active);
+	int row = EmpDAO.insertEmp(empID, empPW, empName, empJob, hireDate, active);
 	
 	
 	if(row == 1){
