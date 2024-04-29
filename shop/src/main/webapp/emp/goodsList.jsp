@@ -274,46 +274,40 @@
 	<%
 	}
 	%>
-				
-	<%
-					} else { //카테고리의 값이 null이 아닐때
-					for (HashMap m1 : goodslist) {
-					%>
-		<div class="container text-center">
-			<div class="row row-cols-3">
-			
-			<div class="col image-box">
-				<img src="<%=request.getContextPath()%>/upload/<%=(String) (m1.get("imagePath"))%>"></div>
-			
-			
-				<div class="col">
-					번호 :
-					<%=(Integer) (m1.get("no"))%></div>
-				<div class="col">
-					카테고리 :
-					<%=(String) (m1.get("category"))%></div>
-				<div class="col">
-					제목 :
-					<%=(String) (m1.get("title"))%></div>
-				<div class="col">
-					내용 :
-					<%=(String) (m1.get("content"))%></div>
-				<div class="col">
-					가격 :
-					<%=(Integer) (m1.get("price"))%></div>
-				<div class="col">
-					수량 :
-					<%=(Integer) (m1.get("amount"))%></div>
-				<div>
-				<a href="./deletegoodsAction.jsp?no=<%=m1.get("no")%>">상품삭제</a>
-				</div>	
-			</div>
-		</div>
-	
 		<%
-			}
-		}
-		%>
+			  } else { // 카테고리의 값이 null이 아닐 때
+			        int counter = 0; // 이미지 카운터 변수를 초기화.
+			%>
+			<div class="container text-center">
+			    <div class="row">
+			        <% for (HashMap m1 : goodslist) { %>
+			        <div class="col-md-3 mb-4">
+			            <div class="card h-100">
+			                <img src="<%=request.getContextPath()%>/upload/<%=m1.get("imagePath")%>" class="card-img-top" alt="...">
+			                <div class="card-body">
+			                    <h5 class="card-title">제목: <%=m1.get("title")%></h5>
+			                    <p class="card-text">
+			                        번호: <a href="./customergoodsOne.jsp?goodsNo=<%= m1.get("no") %>"><%=m1.get("no")%></a><br>
+			                        카테고리: <%=m1.get("category")%><br>
+			                        가격: <%=m1.get("price")%><br>
+			                        수량: <%=m1.get("amount")%>
+			                    </p>
+			                </div>
+			            </div>
+			        </div>
+			        <% 
+			            counter++; // 이미지 카운터 증가.
+			            // 이미지 카운터가 4의 배수이고 마지막 이미지일 때 새로운 행을 시작.
+			            if (counter % 4 == 0 || counter == goodslist.size()) { 
+			        %>
+			    </div>
+			</div>
+			<div class="container text-center">
+			    <div class="row">
+			<% 
+					} 
+			    } 
+			%>
 		
 		
 			
@@ -350,6 +344,7 @@
 			<li class="page-item"><a class="page-link">next</a></li>
 
 			<%
+				}
 			}
 			%>
 

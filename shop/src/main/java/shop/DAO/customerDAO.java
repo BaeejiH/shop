@@ -9,51 +9,49 @@ import java.util.HashMap;
 
 
 public class customerDAO {
-	//goodsList 페이징
-		 public static ArrayList<HashMap<String, Object>> ppcustomerList(String category, int startRow, int rowPerPage) throws Exception {
-			
-			 Class.forName("org.mariadb.jdbc.Driver");
-			PreparedStatement stmt1 = null;
-			ResultSet rs1 = null;
-			Connection conn = DBHelper.getConnection();
-			
-	        String sql = "";
-	        if (category == null || "null".equals(category)) {
-	            sql = "select goods_no goodsNo, category, goods_title title, filename,left(goods_content,500)content, goods_price price, goods_amount amount FROM goods ORDER BY goods_no DESC limit ?,?;";
-	        } else {
-	            sql = "select goods_no goodsNo, category, goods_title title, filename,left(goods_content,500)content, goods_price price, goods_amount amount FROM goods WHERE category = ? ORDER BY goods_no DESC limit ?,?;"; 
-	        }
+	//customergoodsList 페이징
+	public static ArrayList<HashMap<String, Object>> ppcustomerList(String category, int startRow, int rowPerPage) throws Exception {
+	    Class.forName("org.mariadb.jdbc.Driver");
+	    PreparedStatement stmt1 = null;
+	    ResultSet rs1 = null;
+	    Connection conn = DBHelper.getConnection();
 
-	        stmt1 = conn.prepareStatement(sql);
+	    String sql = "";
+	    if (category == null || "null".equals(category)) {
+	        sql = "SELECT goods_no goodsNo, category, goods_title title, filename, LEFT(goods_content, 500) content, goods_price price, goods_amount amount FROM goods ORDER BY goods_no DESC LIMIT ?, ?";
+	    } else {
+	        sql = "SELECT goods_no goodsNo, category, goods_title title, filename, LEFT(goods_content, 500) content, goods_price price, goods_amount amount FROM goods WHERE category = ? ORDER BY goods_no DESC LIMIT ?, ?"; 
+	    }
 
-	        int iParam = 1;
-	        if (!(category == null || "null".equals(category))) {
-	            stmt1.setString(iParam++, category);
-	        }
+	    stmt1 = conn.prepareStatement(sql);
 
-	        stmt1.setInt(iParam++, startRow);
-	        stmt1.setInt(iParam++, rowPerPage);
+	    int iParam = 1;
+	    if (!(category == null || "null".equals(category))) {
+	        stmt1.setString(iParam++, category);
+	    }
 
-	        rs1 = stmt1.executeQuery();
+	    stmt1.setInt(iParam++, startRow);
+	    stmt1.setInt(iParam++, rowPerPage);
 
-	        ArrayList<HashMap<String, Object>> customerList = new ArrayList<>();
-	        
-	        while (rs1.next()) {
-	            HashMap<String, Object> m = new HashMap<>();
-	            String imagePath = rs1.getString("filename");
-	            m.put("goodsNo", rs1.getInt("goodsNo"));
-	            m.put("category", rs1.getString("category"));
-	            m.put("title", rs1.getString("title"));
-	            m.put("content", rs1.getString("content"));
-	            m.put("price", rs1.getInt("price"));
-	            m.put("amount", rs1.getInt("amount"));
-	            m.put("imagePath", imagePath);
-	            customerList.add(m);
-	        }
-		        	        
-		       return customerList; 
-		 }
+	    rs1 = stmt1.executeQuery();
 
+	    ArrayList<HashMap<String, Object>> customerList = new ArrayList<>();
+	    
+	    while (rs1.next()) {
+	        HashMap<String, Object> m = new HashMap<>();
+	        String imagePath = rs1.getString("filename");
+	        m.put("goodsNo", rs1.getInt("goodsNo"));
+	        m.put("category", rs1.getString("category"));
+	        m.put("title", rs1.getString("title"));
+	        m.put("content", rs1.getString("content"));
+	        m.put("price", rs1.getInt("price"));
+	        m.put("amount", rs1.getInt("amount"));
+	        m.put("imagePath", imagePath);
+	        customerList.add(m);
+	    }
+	            
+	    return customerList; 
+	}
 		
 		
 		//카테코리 그룹별 출력
