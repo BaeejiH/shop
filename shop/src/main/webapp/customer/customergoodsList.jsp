@@ -126,8 +126,27 @@
 	  font-weight: 400;
 	  font-style: normal;
 	}
-	
-	
+	.b {
+    	background-color: #3DB7CC;
+  }
+  
+   .fullscreen-img {
+    width: 60%;
+    height: 400px;
+    object-fit: auto;
+   
+  }
+  
+  .gg{
+  	 background-color: #FAED7D;
+  }
+  
+  .xdx{
+  	height : auto;
+  	width : 100%;
+  	object-fit: cover;
+  }
+ 
 	
 	</style>
 				
@@ -135,18 +154,31 @@
 				
 			</head>
 		<body>
-		
-		
-		
-		<ul class="nav">
+
+
+	<div class="b text-center d-flex align-items-end justify-content-center">
+
+		<div>
+
+			<div>
+				<H2>지금 가입하면 5000원 쿠폰 증정!!!</H2>
+			</div>
+
+		</div>
+
+	</div>
+
+
+	<ul class="nav">
 				<li class="nav-item"><jsp:include page="/customer/Cinc/customermenu.jsp"></jsp:include></li>	
 			</ul>
 			
 			<div><a href ="/shop/customer/customerlogout.jsp">로그아웃</a></div>
+
+
 		
-		
-		
-		  <div class="text-center d-flex align-items-end justify-content-center">
+	
+		<div class="text-center d-flex align-items-end justify-content-center">
 	
 	                <div>
 	
@@ -156,7 +188,7 @@
 	
 	                </div>
 	
-	            </div>
+	      </div>
 		
 		
 		
@@ -171,25 +203,25 @@
 	                </div>
 	
 	            </div>
-	            
-	  
-	            
-	                   
-	            
-	
-					
-			
-		<!-- 상품등록 -->
-		
-	
-		
-				
-			
-			
-		
-	
-		
-			<!-- 서브 메뉴 카테고리별 상품리스트 -->
+
+
+		<!-- 메인 이미지 출력 -->
+	<div class="container-fluid">
+		<div class="row justify-content-center align-items-center">
+			<div class="col text-center">
+				<img
+					src="https://img.dogpre.com/web/dogpre/event/main_banner/sno_top1_back_202404221112051.jpg"
+					class="xdx" alt="">
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+	<!-- 서브 메뉴 카테고리별 상품리스트 -->
 			
 			
 			
@@ -201,7 +233,7 @@
 					<b><a href="/shop/customer/customergoodsList.jsp?category=<%=(String)(m0.get("category"))%>" class="na ss nav nav-fill w-100 d-flex">
 							<%=(String)(m0.get("category"))%></b>					
 						</a>
-						
+							
 				<%
 					}
 				%>				
