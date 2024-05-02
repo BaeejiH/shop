@@ -9,62 +9,55 @@
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title></title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">      
-        <style>
-            .cinzel {
-                font-family: "Cinzel", serif;
-                font-optical-sizing: auto;
-                font-weight: 400;
-                font-style: normal;
-            }
-            
-            .cccc {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh; /
-            }
-        </style>        
-    </head>
-    <body class="cinzel">
-        <div class="cccc">
-            <div>
-                <h1>customer Login</h1>
-                <form method=post action="./customerloginAction.jsp">
-                    <table>
-                        <tr>
-                            <th>Id:</th>
-                            <td><input type="text" name="customerID" class=form-control value="" placeholder="아이디"></td>   <br>
-                        </tr>
-                        <tr>
-                            <th>Pw:</th>
-                            <td><input type="password" name="customerPW" class=form-control value="" placeholder="비밀번호"></td>
-                        </tr>
-                    </table>
-                    <br>
-                    <button type="submit" class="btn btn-dark">로그인</button>
-                    <button class="btn btn-primary" type="button" disabled>
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        Loading...
-                    </button>
-                    <a href="/shop/customer/addcustomerForm.jsp">회원가입</a>
-                </form>   
+<head>
+    <meta charset="UTF-8">
+    <title>customer Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cinzel', serif;
+        }
+        .center-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-form {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .login-form input[type="text"],
+        .login-form input[type="password"] {
+            margin-bottom: 10px;
+        }
+        .login-form button[type="submit"] {
+            margin-top: 10px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="center-content">
+    <div class="login-form">
+        <h1 class="text-center">customer Login</h1>
+        <form method="post" action="./customerloginAction.jsp">
+            <div class="mb-3">
+                <input type="text" name="customerID" class="form-control" value="" placeholder="아이디">
             </div>
-        </div>
-    </body>
-</html>  
-            
-            
-            
-            
+            <div class="mb-3">
+                <input type="password" name="customerPW" class="form-control" value="" placeholder="비밀번호">
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-info">로그인</button>
+            </div>
+            <a href="/shop/customer/addcustomerForm.jsp">회원가입</a>
+        </form>   
+    </div>
+</div>
 
 </body>
 </html>

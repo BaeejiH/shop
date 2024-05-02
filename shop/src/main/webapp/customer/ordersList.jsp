@@ -32,17 +32,63 @@
 <head>
     <meta charset="UTF-8">
     <title>주문내역</title>
+    
+<style>
+	body {
+	    font-family: Arial, sans-serif;
+	    background-color: #f8f9fa;
+	    padding: 20px;
+	}
+	
+	h1 {
+	    text-align: center;
+	}
+	
+	table {
+	    width: 100%;
+	    border-collapse: collapse;
+	}
+	
+	table, th, td {
+	    border: 1px solid #ccc;
+	}
+	
+	th, td {
+	    padding: 10px;
+	    text-align: center;
+	}
+	
+	th {
+	    background-color: #f0f0f0;
+	}
+	
+	a {
+	    color: #007bff;
+	    text-decoration: none;
+	}
+	
+	a:hover {
+	    text-decoration: underline;
+	}
+
+
+
+</style>    
+    
+    
+    
+    
 </head>
 <body>
     <h1>주문내역</h1>
-    <table border="1">
+    <table border="1" class="cccc">
         <tr>
             <th>주문번호</th>
             <th>상품번호</th>
             <th>상품명</th>
             <th>주문날짜</th>
             <th>주문상태</th>
-            <th></th>
+            <th></th>	
         </tr>
         <% 
         	for (HashMap<String, Object> order : ordersList) { 
